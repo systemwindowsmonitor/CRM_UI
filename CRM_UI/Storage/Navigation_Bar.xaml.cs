@@ -160,6 +160,23 @@ namespace CRM_UI.Storage
             
         }
 
+        private void btnOpenMaterial_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+
+        }
+
+        private void OpenPopUpBox_Click(object sender, RoutedEventArgs e)
+        {
+            OpenPopUpBox.Visibility = Visibility.Collapsed;
+            ClosedPopUpBox.Visibility = Visibility.Visible;
+        }
+
+        private void ClosedPopUpBox_Click(object sender, RoutedEventArgs e)
+        {
+            OpenPopUpBox.Visibility = Visibility.Visible;
+            ClosedPopUpBox.Visibility = Visibility.Collapsed;
+        }
+
         //private void btnOpenMaterial_Click(object sender, RoutedEventArgs e)
         //{
         //    //btnOpenMaterial.Visibility = Visibility.Collapsed;
