@@ -1,59 +1,32 @@
 ﻿using CRM_UI.Models;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data.Common;
-using System.Data.SQLite;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
 
 namespace CRM_UI.Storage
 {
     /// <summary>
-    /// Логика взаимодействия для Navigation_Bar.xaml
+    /// Логика взаимодействия для Storage_Window.xaml
     /// </summary>
-    public partial class Navigation_Bar : UserControl
+    public partial class Storage_Window : UserControl
     {
         private BindingList<TodoModel> _todoData;
 
-        public Navigation_Bar()
+        public Storage_Window()
         {
             InitializeComponent();
-
-           
-        }
-
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
-            _todoData = new BindingList<TodoModel>()
-            {
-                new TodoModel(){vendorcode = "TF3667", Title = "Ботинки", Measurements = "шт", CostPrice = 15.92, Price = 58.99, Weight = 20, Volume = 5,
-                Url = "https://intertop.ua/ua/catalog/muzhskaya_obuv/timberland-tbl-icon-6-double-collar/?gclid=CjwKCAiA_f3uBRAmEiwAzPuaM_sPzJBm0m52fmhYSmb-XRdfXYAEABhIVbFSJD2TM7uw-_NpOZe2HhoCcCMQAvD_BwE",
-                InStock = false}
-                
-            };
-
-            using (SQLiteConnection conn = new SQLiteConnection(string.Format($"Data Source=TestDB.db;")))
-            {
-                conn.Open();
-                SQLiteCommand command = new SQLiteCommand("SELECT* FROM Goods;", conn);
-                using (var reader = command.ExecuteReader())
-                {
-                    foreach (DbDataRecord record in reader)
-                    {
-                        _todoData.Add(new TodoModel()
-                        {
-                            vendorcode = record.GetInt64(0).ToString(),
-                            Title = record.GetString(1),
-                            Price = record.GetDouble(2)
-                        }) ;
-                       
-                    }
-                }
-            }
-
-            dgXAML.ItemsSource = _todoData;
-
-            
         }
 
         private void ButtonOpenMenu_Click(object sender, RoutedEventArgs e)
@@ -68,7 +41,37 @@ namespace CRM_UI.Storage
             ButtonCloseMenu.Visibility = Visibility.Collapsed;
         }
 
-        
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            _todoData = new BindingList<TodoModel>()
+            {
+                new TodoModel(){vendorcode = "TF3667", Title = "Ботинки", Measurements = "шт", CostPrice = 15.92, Price = 58.99, Weight = 20, Volume = 5,
+                Url = "https://intertop.ua/ua/catalog/muzhskaya_obuv/timberland-tbl-icon-6-double-collar/?gclid=CjwKCAiA_f3uBRAmEiwAzPuaM_sPzJBm0m52fmhYSmb-XRdfXYAEABhIVbFSJD2TM7uw-_NpOZe2HhoCcCMQAvD_BwE",
+                InStock = false}
+
+            };
+
+            dgXAML.ItemsSource = _todoData;
+        }
+
+        private void OpenPopUpBox_Click(object sender, RoutedEventArgs e)
+        {
+            OpenPopUpBox.Visibility = Visibility.Collapsed;
+            ClosedPopUpBox.Visibility = Visibility.Visible;
+        }
+
+        private void ClosedPopUpBox_Click(object sender, RoutedEventArgs e)
+        {
+            OpenPopUpBox.Visibility = Visibility.Visible;
+            ClosedPopUpBox.Visibility = Visibility.Collapsed;
+        }
+
+        private void VendorTxt_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            
+            
+        }
+
         private void NameTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (NameTextBox.Text == "")
@@ -80,18 +83,12 @@ namespace CRM_UI.Storage
 
             if (NameTextBox.Text.Length > 0)
             {
-                NameTextBox.BorderBrush = Brushes.Blue;
+                NameTextBox.BorderBrush = Brushes.Gray;
                 NameTextBox.Foreground = Brushes.Black;
 
 
                 NameTextBox.Style = this.FindResource("MaterialDesignFloatingHintTextBox") as Style;
             }
-            
-        }
-
-        private void btnCategory_Click(object sender, RoutedEventArgs e)
-        {
-
         }
 
         private void UnitTxt_TextChanged(object sender, TextChangedEventArgs e)
@@ -105,11 +102,11 @@ namespace CRM_UI.Storage
 
             if (UnitTxt.Text.Length > 0)
             {
-                //NameTextBox.BorderBrush = Brushes.Gray;
-                //NameTextBox.Foreground = Brushes.Black;
+                UnitTxt.BorderBrush = Brushes.Gray;
+                UnitTxt.Foreground = Brushes.Black;
 
 
-                UnitTxt.Style = this.FindResource("MaterialDesignFloatingHintTextBox") as Style; 
+                UnitTxt.Style = this.FindResource("MaterialDesignFloatingHintTextBox") as Style;
             }
         }
 
@@ -124,7 +121,7 @@ namespace CRM_UI.Storage
 
             if (CostTxt.Text.Length > 0)
             {
-                CostTxt.BorderBrush = Brushes.Blue;
+                CostTxt.BorderBrush = Brushes.Gray;
                 CostTxt.Foreground = Brushes.Black;
 
 
@@ -151,22 +148,19 @@ namespace CRM_UI.Storage
             }
         }
 
-        private void OpenPopUpBox_Click(object sender, RoutedEventArgs e)
+        private void WeightTxt_TextChanged(object sender, TextChangedEventArgs e)
         {
-            OpenPopUpBox.Visibility = Visibility.Collapsed;
-            ClosedPopUpBox.Visibility = Visibility.Visible;
+            
         }
 
-        private void ClosedPopUpBox_Click(object sender, RoutedEventArgs e)
+        private void VolumetTxt_TextChanged(object sender, TextChangedEventArgs e)
         {
-            OpenPopUpBox.Visibility = Visibility.Visible;
-            ClosedPopUpBox.Visibility = Visibility.Collapsed;
-        } 
+            
+        }
 
-        //private void btnOpenMaterial_Click(object sender, RoutedEventArgs e)
-        //{
-        //    //btnOpenMaterial.Visibility = Visibility.Collapsed;
-        //    //btnCloseMaterial.Visibility = Visibility.Visible;
-        //}
+        private void UrltTxt_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            
+        }
     }
 }

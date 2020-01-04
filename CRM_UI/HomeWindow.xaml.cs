@@ -56,6 +56,36 @@ namespace CRM_UI
             }
         }
 
+        private void btnMinus_Click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
+
+        private void btnFullscreen_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.WindowState == WindowState.Normal)
+            {
+                this.WindowState = WindowState.Maximized;
+                btnFullscreenExit.Visibility = Visibility.Visible;
+                btnFullscreen.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void btnFullscreenExit_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.WindowState == WindowState.Maximized)
+            {
+                this.WindowState = WindowState.Normal;
+                btnFullscreenExit.Visibility = Visibility.Collapsed;
+                btnFullscreen.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void btnExit_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
         //private void ButtonPowerOff1_MouseEnter(object sender, MouseEventArgs e)
         //{
         //    ButtonPowerOff1.Background = Brushes.Red;

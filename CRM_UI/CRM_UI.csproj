@@ -73,32 +73,24 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="HomeWindow.xaml.cs">
-      <DependentUpon>HomeWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
+    <Compile Include="Home_Window.xaml.cs">
+      <DependentUpon>Home_Window.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\TodoModel.cs" />
-    <Compile Include="Storage\Navigation_Bar.xaml.cs">
-      <DependentUpon>Navigation_Bar.xaml</DependentUpon>
-    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Storage\ObservableObject.cs" />
+    <Compile Include="Storage\Storage_Window.xaml.cs">
+      <DependentUpon>Storage_Window.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Storage\ValidationData.cs" />
-    <Page Include="HomeWindow.xaml">
+    <Page Include="Home_Window.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>XamlIntelliSenseFileGenerator</Generator>
-    </Page>
-    <Page Include="Storage\Navigation_Bar.xaml">
+    <Page Include="Storage\Storage_Window.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
