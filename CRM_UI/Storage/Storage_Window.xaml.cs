@@ -162,5 +162,62 @@ namespace CRM_UI.Storage
         {
             
         }
+
+        private void TextBoxNumber_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (TextBoxNumber.Text == "")
+            {
+                TextBoxNumber.BorderBrush = Brushes.Red;
+                TextBoxNumber.Foreground = Brushes.Red;
+
+
+                btnOnAdd.Visibility = Visibility.Collapsed;
+                btnOffAdd.Visibility = Visibility.Visible;
+            }
+
+            if (TextBoxNumber.Text.Length > 0)
+            {
+                TextBoxNumber.BorderBrush = Brushes.Gray;
+                TextBoxNumber.Foreground = Brushes.Black;
+
+
+                btnOnAdd.Visibility = Visibility.Visible;
+                btnOffAdd.Visibility = Visibility.Collapsed;
+                TextBoxNumber.Style = this.FindResource("MaterialDesignFloatingHintTextBox") as Style;
+            }
+        }
+
+        
+
+        private void btnOnAdd_Click(object sender, RoutedEventArgs e)
+        {
+
+            
+
+            //if (ComboBoxMaterial.ItemsSource == null)
+            //{
+            //    btnOnAdd.Visibility = Visibility.Collapsed;
+            //    btnOffAdd.Visibility = Visibility.Visible;
+            //}
+            //if (ComboBoxMaterial.SelectedIndex > 0)
+            //{
+            //    ComboBoxMaterial.BorderBrush = Brushes.Gray;
+            //    ComboBoxMaterial.Foreground = Brushes.Black;
+
+
+            //    btnOnAdd.Visibility = Visibility.Visible;
+            //    btnOffAdd.Visibility = Visibility.Collapsed;
+            //    TextBoxNumber.Style = this.FindResource("MaterialDesignFloatingHintComboBox") as Style;
+            //}
+        }
+
+        private void ComboBoxMaterial_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (ComboBoxMaterial.ItemsSource == null)
+            {
+                btnOnAdd.Visibility = Visibility.Collapsed;
+                btnOffAdd.Visibility = Visibility.Visible;
+            }
+        }
     }
 }

@@ -493,7 +493,9 @@
 
             <Button x:Name="btnMinusMaterial" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" 
                     Width="40" Height="40" Padding="0" Background="White" BorderBrush="{x:Null}" Foreground="Black" 
-                    HorizontalAlignment="Center" Margin="5" RenderTransformOrigin="0.5,0.5" >
+                    HorizontalAlignment="Center" Margin="5" RenderTransformOrigin="0.5,0.5" 
+                    Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}" 
+                                CommandTarget="{Binding ElementName=DHMinusMaterial}">
                 <Button.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform/>
@@ -528,7 +530,8 @@
             </Button>
 
             <Button x:Name="btnCategory" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}"
-                            
+                        Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}" 
+                                CommandTarget="{Binding ElementName=DHCategory}"    
                     Width="40" Height="40" Padding="0" Background="White" BorderBrush="{x:Null}" Foreground="Black" 
                     HorizontalAlignment="Center" Margin="5" RenderTransformOrigin="0.5,0.5" >
                 <Button.RenderTransform>
@@ -695,5 +698,99 @@
                     BorderBrush="Gray" Grid.ColumnSpan="2" Style="{DynamicResource MaterialDesignOutlinedButton}"/>
         </Grid>
         <!--#endregion-->
+
+        <!--#region Диалоговое окно для добавления материалов-->
+        <materialDesign:DialogHost IsOpen="False" x:Name="DHCategory" Grid.RowSpan="3">
+            <materialDesign:DialogHost.DialogContent>
+                <StackPanel Margin="15" Orientation="Vertical">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="Новая категория" Grid.Row="0" HorizontalAlignment="Center" FontSize="15"/>
+                        <TextBox materialDesign:HintAssist.Hint="Категория"  Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                                 VerticalAlignment="Center" Foreground="Black" Grid.Row="1" Grid.ColumnSpan="2"  MaxWidth="220"/>
+                        
+                        <Button Grid.Row="3" Grid.Column="0" Style="{StaticResource MaterialDesignFlatButton}"
+                                Content="Отмена" Margin="10" Foreground="DimGray"
+                                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" 
+                                CommandTarget="{Binding ElementName=DHCategory}"/>
+                        <Button Grid.Row="3" Grid.Column="1" Style="{StaticResource MaterialDesignFlatButton}"
+                                Content="Создать" Margin="10" Foreground="DimGray"/>
+                    </Grid>
+                    
+                </StackPanel>
+            </materialDesign:DialogHost.DialogContent>
+        </materialDesign:DialogHost>
+<!--#endregion-->
+
+        <!--#region Диалоговое окно отнятия материалов-->
+        <materialDesign:DialogHost IsOpen="False" x:Name="DHMinusMaterial" Grid.RowSpan="3">
+            <materialDesign:DialogHost.DialogContent>
+                <StackPanel Orientation="Vertical">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Background="White" 
+                             Margin="1">
+                            <Grid.Effect>
+                                <DropShadowEffect BlurRadius="30" ShadowDepth="5" Color="#FFACACAC"/>
+                            </Grid.Effect>
+
+                            <TextBlock Text="Отнять материал с склада" HorizontalAlignment="Center" FontSize="15" 
+                                       Margin="10"/>
+                        </Grid>
+
+                        <ComboBox x:Name="ComboBoxMaterial" materialDesign:HintAssist.Hint="Материал*" Grid.Row="1" Grid.ColumnSpan="2" MaxWidth="190" 
+                                  Margin="10" Style="{StaticResource MaterialDesignFloatingHintComboBox}" IsVisibleChanged="ComboBoxMaterial_IsVisibleChanged" 
+                                   
+                                   >
+                            <ComboBoxItem Content="Ботинки"/>
+                            <ComboBoxItem Content="Футболка"/>
+                            <ComboBoxItem Content="Гнев Руслана"/>
+                            <ComboBoxItem Content="Заебись проект"/>
+                        </ComboBox>
+
+                        <TextBox x:Name="TextBoxNumber" materialDesign:HintAssist.Hint="Количество*" Margin="10"
+                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" 
+                                 Foreground="Black" Grid.Row="2" Grid.ColumnSpan="2"  MaxWidth="190" 
+                                 TextChanged="TextBoxNumber_TextChanged" />
+
+
+                        <Button x:Name="btnOffAdd" Grid.Row="3" Grid.Column="0" Style="{StaticResource MaterialDesignFlatButton}"
+                                Content="Добавить" Margin="10" Foreground="Black" IsEnabled="False" Background="Gray"/>
+
+                        <Button x:Name="btnOnAdd" Grid.Row="3" Grid.Column="0" Style="{StaticResource MaterialDesignRaisedButton}"
+                                Content="Добавить" Margin="10" Foreground="WhiteSmoke" Background="#FF33425C" 
+                                Visibility="Collapsed" Click="btnOnAdd_Click"/>
+                        
+                        <Button Grid.Row="3" Grid.Column="1" Style="{StaticResource MaterialDesignFlatButton}"
+                                Content="Отмена" Margin="10" Foreground="DimGray"
+                                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" 
+                                CommandTarget="{Binding ElementName=DHMinusMaterial}"/>
+                    </Grid>
+
+                </StackPanel>
+            </materialDesign:DialogHost.DialogContent>
+        </materialDesign:DialogHost>
+        <!--#endregion-->
+        
     </Grid>
 </UserControl>
