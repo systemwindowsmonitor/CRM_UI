@@ -360,6 +360,7 @@ namespace CRM_UI.Storage
                 command.Parameters.Add(new SQLiteParameter("@name", NameCategorie_Tb.Text));
                 command.ExecuteNonQuery();
             }
+            GC.Collect();
             ClearDataView();
             SelectFolders();
             UpdateDataView(); 
@@ -393,6 +394,37 @@ namespace CRM_UI.Storage
                 command.Parameters.Add(new SQLiteParameter("@price", PriceTxt.Text));
                 command.Parameters.Add(new SQLiteParameter("@cat_id", ++SelectCategorie_CB.SelectedIndex));
                 command.ExecuteNonQuery();
+            }
+        }
+
+        private void btnOnAdd_Click(object sender, RoutedEventArgs e)
+        {
+            using (SQLiteConnection conn = new SQLiteConnection(string.Format($"Data Source=TestDB.db;")))
+            {
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand($"DELETE FROM Goods WHERE NAME = '{ComboBoxMaterial.Items[ComboBoxMaterial.SelectedIndex].ToString()}';", conn);
+                command.ExecuteNonQuery();
+            }
+            GC.Collect();
+            ClearDataView();
+            SelectFolders();
+            UpdateDataView();
+        }
+        private void ComboBoxMaterial_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (ComboBoxMaterial.Items.Count > 0)
+                ComboBoxMaterial.Items.Clear();
+            using (SQLiteConnection conn = new SQLiteConnection(string.Format($"Data Source=TestDB.db;")))
+            {
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand($"SELECT* FROM Goods;", conn);
+                using (var reader = command.ExecuteReader())
+                {
+                    foreach (DbDataRecord record in reader)
+                    {
+                        ComboBoxMaterial.Items.Add(record.GetString(1));
+                    }
+                }
             }
         }
     }

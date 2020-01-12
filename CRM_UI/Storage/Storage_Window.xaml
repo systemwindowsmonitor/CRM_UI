@@ -757,12 +757,9 @@
                         <ComboBox x:Name="ComboBoxMaterial" materialDesign:HintAssist.Hint="Материал*" Grid.Row="1" Grid.ColumnSpan="2" MaxWidth="190" 
                                   Margin="10" Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
                                   IsVisibleChanged="ComboBoxMaterial_IsVisibleChanged" SelectionChanged="ComboBoxMaterial_SelectionChanged" 
-                                   
+                                   Loaded="ComboBoxMaterial_Loaded"
                                    >
-                            <ComboBoxItem Content="Ботинки"/>
-                            <ComboBoxItem Content="Футболка"/>
-                            <ComboBoxItem Content="Гнев Руслана"/>
-                            <ComboBoxItem Content="Заебись проект"/>
+                            
                         </ComboBox>
 
                         <TextBox x:Name="TextBoxNumber" materialDesign:HintAssist.Hint="Количество*" Margin="10"
@@ -775,11 +772,12 @@
 
 
                         <Button x:Name="btnOffAdd" Grid.Row="3" Grid.Column="0" Style="{StaticResource MaterialDesignFlatButton}"
-                                Content="Добавить" Margin="10" Foreground="Black" IsEnabled="False" Background="Gray"/>
+                                Content="Отнять" Margin="10" Foreground="Black" IsEnabled="False" Background="Gray"/>
 
                         <Button x:Name="btnOnAdd" Grid.Row="3" Grid.Column="0" Style="{StaticResource MaterialDesignRaisedButton}"
-                                Content="Добавить" Margin="10" Foreground="WhiteSmoke" Background="#FF33425C" 
-                                Visibility="Collapsed" />
+                                Content="Отнять" Margin="10" Foreground="WhiteSmoke" Background="#FF33425C" 
+                                Visibility="Collapsed" Click="btnOnAdd_Click"
+                                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" />
 
                         <Button Name="CancelDHMinusMaterial" Grid.Row="3" Grid.Column="1" Style="{StaticResource MaterialDesignFlatButton}"
                                 Content="Отмена" Margin="10" Foreground="DimGray"
