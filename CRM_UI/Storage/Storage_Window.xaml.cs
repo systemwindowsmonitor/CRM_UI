@@ -68,7 +68,6 @@ namespace CRM_UI.Storage
                             Title = record.GetString(1),
                             icon_path = CRM_UI.String_Resources.Folder_icon_path
                         }) ;
-
                     }
                 }
             }
@@ -350,6 +349,51 @@ namespace CRM_UI.Storage
         private void AddReturnFolder()
         {
             _todoData.Add(new FolderModel() { icon_path = CRM_UI.String_Resources.Folder_return_icon_path, Title = CRM_UI.String_Resources.Folder_return_text, vendorcode = "0" });
+        }
+
+        private void AddCategorie_btn_Click(object sender, RoutedEventArgs e)
+        {
+            using (SQLiteConnection conn = new SQLiteConnection(string.Format($"Data Source=TestDB.db;")))
+            {
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand($"INSERT INTO Categories(NAME) values(@name);", conn);
+                command.Parameters.Add(new SQLiteParameter("@name", NameCategorie_Tb.Text));
+                command.ExecuteNonQuery();
+            }
+            ClearDataView();
+            SelectFolders();
+            UpdateDataView(); 
+
+        }
+
+        private void OpenMaterial_Loaded(object sender, RoutedEventArgs e)
+        {
+            using (SQLiteConnection conn = new SQLiteConnection(string.Format($"Data Source=TestDB.db;")))
+            {
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand($"SELECT * FROM Categories;", conn);
+                using (var reader = command.ExecuteReader())
+                {
+                    foreach (DbDataRecord record in reader)
+                    {
+                        SelectCategorie_CB.Items.Add(record.GetString(1));
+                    }
+                }
+            }
+            SelectCategorie_CB.SelectedIndex = 0;
+        }
+
+        private void AddMaterial_Btn_Click(object sender, RoutedEventArgs e)
+        {
+            using (SQLiteConnection conn = new SQLiteConnection(string.Format($"Data Source=TestDB.db;")))
+            {
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand($"INSERT INTO Goods(NAME,PRICE,ID_CATEGORI) values(@name,@price,@cat_id);", conn);
+                command.Parameters.Add(new SQLiteParameter("@name", NameTextBox.Text));
+                command.Parameters.Add(new SQLiteParameter("@price", PriceTxt.Text));
+                command.Parameters.Add(new SQLiteParameter("@cat_id", ++SelectCategorie_CB.SelectedIndex));
+                command.ExecuteNonQuery();
+            }
         }
     }
 }
