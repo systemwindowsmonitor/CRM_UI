@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CRM_UI.Storage"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             mc:Ignorable="d" Loaded="UserControl_Loaded">
+             mc:Ignorable="d" Loaded="UserControl_Loaded" SizeChanged="UserControl_SizeChanged" >
 
     <UserControl.Resources>
         <Storyboard x:Key="OpenPopUpBox">
@@ -111,7 +111,7 @@
                 <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="0"/>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
-        
+
         <Storyboard x:Key="OpenFilter">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)" Storyboard.TargetName="ScrolBar">
                 <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
@@ -361,7 +361,7 @@
             </Grid>
 
         </Grid>
-<!--#endregion-->
+        <!--#endregion-->
 
         <!--#region DataGrid с информацией о товарах-->
         <ScrollViewer x:Name="ScrolBar" Grid.Row="1" Grid.RowSpan="2" VerticalScrollBarVisibility="Disabled" 
@@ -376,8 +376,9 @@
             </ScrollViewer.RenderTransform>
 
             <DataGrid x:Name="dgXAML" Margin="10" CanUserSortColumns="True" 
-                      CanUserAddRows="True" AutoGenerateColumns="False">
+                      CanUserAddRows="True" AutoGenerateColumns="False"  SelectionChanged="dgXAML_SelectionChanged" >
                 <DataGrid.Columns>
+             
                     <DataGridCheckBoxColumn 
                         Binding="{Binding Path=IsDone}" 
                         ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}" 
@@ -388,57 +389,40 @@
                             </Border>
                         </DataGridCheckBoxColumn.Header>
                     </DataGridCheckBoxColumn>
-
-                    <DataGridTextColumn Header="Артикул" 
+                    <DataGridTextColumn Header="№" 
                                         Binding="{Binding Path=vendorcode}"
-                                        EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"/>
-                    <DataGridTextColumn Header="Фото" 
-                                        
-                                        EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"/>
+                                        EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}">
+                        
+                    </DataGridTextColumn>
+
+                    <DataGridTemplateColumn Header="">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image x:Name="log" Source="{Binding icon_path}" Margin="0 0 40 0"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    
+
                     <DataGridTextColumn Header="Название" 
                                         Binding="{Binding Path=Title}"
-                                        EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"/>
-
-                    <DataGridTextColumn Header="Измерения" 
-                                        Binding="{Binding Path=Measurements}"
-                                        EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"/>
-
-                    <DataGridTextColumn Header="Себестоимость" 
-                                        Binding="{Binding Path=CostPrice}"
                                         EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"/>
 
                     <DataGridTextColumn Header="Цена" 
                                         Binding="{Binding Path=Price}"
                                         EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"/>
 
-                    <DataGridTextColumn Header="Вес" 
-                                        Binding="{Binding Path=Weight}"
-                                        EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"/>
-
                     <DataGridTextColumn Header="Обьем" 
                                         Binding="{Binding Path=Volume}"
-                                        EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"/>
-
-                    <DataGridTextColumn Header="Url" 
-                                        Binding="{Binding Path=Url}"
                                         EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"/>
 
                     <DataGridTextColumn Header="В наличии" 
                                         Binding="{Binding Path=InStock}"
                                         EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"/>
-
-                    <DataGridTextColumn Header="Всего" EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"/>
-
-                    <DataGridTextColumn Header="Доп. фото" EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"/>
-
-                    <DataGridTextColumn Header="Неактуальный" EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"/>
-
-                    <DataGridTextColumn Header="Маркетплейс" EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"/>
-
                 </DataGrid.Columns>
             </DataGrid>
         </ScrollViewer>
-<!--#endregion-->
+        <!--#endregion-->
 
         <!--#region Панель PopUpBox-->
         <Button Name="OpenPopUpBox" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}"                     
@@ -462,8 +446,8 @@
             </materialDesign:PackIcon>
         </Button>
 
-        <StackPanel x:Name="popupbox" Orientation="Vertical" HorizontalAlignment="Right" Margin="0,70,10,-210" 
-                    Grid.Row="2" RenderTransformOrigin="0.5,0.5">
+        <StackPanel  x:Name="popupbox" Orientation="Vertical" HorizontalAlignment="Right" Margin="0,70,10,-210" 
+                    Grid.Row="2" RenderTransformOrigin="0.5,0.5" GotFocus="popupbox_GotFocus">
             <StackPanel.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -696,6 +680,7 @@
                     Margin="10" Width="150" Content="Отмена" Foreground="Gray" 
                     Background="{x:Null}"
                     BorderBrush="Gray" Grid.ColumnSpan="2" Style="{DynamicResource MaterialDesignOutlinedButton}"/>
+            
         </Grid>
         <!--#endregion-->
 
@@ -718,7 +703,7 @@
                         <TextBlock Text="Новая категория" Grid.Row="0" HorizontalAlignment="Center" FontSize="15"/>
                         <TextBox materialDesign:HintAssist.Hint="Категория"  Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
                                  VerticalAlignment="Center" Foreground="Black" Grid.Row="1" Grid.ColumnSpan="2"  MaxWidth="220"/>
-                        
+
                         <Button Grid.Row="3" Grid.Column="0" Style="{StaticResource MaterialDesignFlatButton}"
                                 Content="Отмена" Margin="10" Foreground="DimGray"
                                 Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" 
@@ -726,14 +711,14 @@
                         <Button Grid.Row="3" Grid.Column="1" Style="{StaticResource MaterialDesignFlatButton}"
                                 Content="Создать" Margin="10" Foreground="DimGray"/>
                     </Grid>
-                    
+
                 </StackPanel>
             </materialDesign:DialogHost.DialogContent>
         </materialDesign:DialogHost>
-<!--#endregion-->
+        <!--#endregion-->
 
         <!--#region Диалоговое окно отнятия материалов-->
-        <materialDesign:DialogHost IsOpen="False" x:Name="DHMinusMaterial" Grid.RowSpan="3">
+        <materialDesign:DialogHost IsOpen="False" x:Name="DHMinusMaterial" Grid.RowSpan="3" PreviewKeyDown="TextBoxNumber_PreviewKeyDown">
             <materialDesign:DialogHost.DialogContent>
                 <StackPanel Orientation="Vertical">
                     <Grid>
@@ -759,7 +744,8 @@
                         </Grid>
 
                         <ComboBox x:Name="ComboBoxMaterial" materialDesign:HintAssist.Hint="Материал*" Grid.Row="1" Grid.ColumnSpan="2" MaxWidth="190" 
-                                  Margin="10" Style="{StaticResource MaterialDesignFloatingHintComboBox}" IsVisibleChanged="ComboBoxMaterial_IsVisibleChanged" 
+                                  Margin="10" Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
+                                  IsVisibleChanged="ComboBoxMaterial_IsVisibleChanged" SelectionChanged="ComboBoxMaterial_SelectionChanged" 
                                    
                                    >
                             <ComboBoxItem Content="Ботинки"/>
@@ -771,7 +757,10 @@
                         <TextBox x:Name="TextBoxNumber" materialDesign:HintAssist.Hint="Количество*" Margin="10"
                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" 
                                  Foreground="Black" Grid.Row="2" Grid.ColumnSpan="2"  MaxWidth="190" 
-                                 TextChanged="TextBoxNumber_TextChanged" />
+                                 TextChanged="TextBoxNumber_TextChanged" 
+                                 PreviewTextInput="TextBoxNumber_PreviewTextInput" 
+                                 PreviewKeyDown="TextBoxNumber_PreviewKeyDown" 
+                                 CommandManager.PreviewExecuted="TextBoxNumber_PreviewExecuted" />
 
 
                         <Button x:Name="btnOffAdd" Grid.Row="3" Grid.Column="0" Style="{StaticResource MaterialDesignFlatButton}"
@@ -779,9 +768,9 @@
 
                         <Button x:Name="btnOnAdd" Grid.Row="3" Grid.Column="0" Style="{StaticResource MaterialDesignRaisedButton}"
                                 Content="Добавить" Margin="10" Foreground="WhiteSmoke" Background="#FF33425C" 
-                                Visibility="Collapsed" Click="btnOnAdd_Click"/>
-                        
-                        <Button Grid.Row="3" Grid.Column="1" Style="{StaticResource MaterialDesignFlatButton}"
+                                Visibility="Collapsed" />
+
+                        <Button Name="CancelDHMinusMaterial" Grid.Row="3" Grid.Column="1" Style="{StaticResource MaterialDesignFlatButton}"
                                 Content="Отмена" Margin="10" Foreground="DimGray"
                                 Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" 
                                 CommandTarget="{Binding ElementName=DHMinusMaterial}"/>
@@ -791,6 +780,145 @@
             </materialDesign:DialogHost.DialogContent>
         </materialDesign:DialogHost>
         <!--#endregion-->
-        
+
+        <!--#region Анимированная панель прихода товара на склад-->
+        <Grid x:Name="OpenAddMaterial" Grid.RowSpan="3" Width="500" Height="500" HorizontalAlignment="Right" Margin="0 0 -500 40" 
+             >
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                
+            </Grid.ColumnDefinitions>
+
+            <Grid.Effect>
+                <DropShadowEffect BlurRadius="30" ShadowDepth="5" Color="#FFACACAC"/>
+            </Grid.Effect>
+
+            <Border CornerRadius="10 0 0 10" Grid.ColumnSpan="3" Grid.RowSpan="11"/>
+
+            <Rectangle Grid.RowSpan="11" Grid.ColumnSpan="3" Width="500" VerticalAlignment="Stretch" RadiusY="14.8" RadiusX="14.8">
+
+                <Rectangle.Fill>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="White"/>
+                        <GradientStop Color="White"/>
+                        <GradientStop Color="White"/>
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+            </Rectangle>
+
+            <Border Width="60" Height="60" Margin="20" CornerRadius="80" BorderThickness="1" Background="White" 
+                    VerticalAlignment="Bottom" HorizontalAlignment="Left">
+
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="30" ShadowDepth="5" Color="#FFACACAC"/>
+                </Border.Effect>
+
+                <materialDesign:PackIcon Kind="Inbox" Foreground="Green" Width="40" Height="40" VerticalAlignment="Center" 
+                                         HorizontalAlignment="Center"/>
+
+            </Border>
+
+
+
+            <TextBlock Grid.Row="0"  
+                       VerticalAlignment="Center" HorizontalAlignment="Center" 
+                       Grid.Column="1" Height="70">
+                <LineBreak/>
+                <Run Text="Приход товара на склад" FontSize="15" Foreground="Black"/>
+                <LineBreak/>
+                <Run Text="Оформление поступлений товаров на склад в любом количестве" Foreground="Black"/>
+
+            </TextBlock>
+
+            <Separator x:Name="separ" Grid.ColumnSpan="2" VerticalAlignment="Bottom" Height="5" Width="350"/>
+
+            <ScrollViewer Grid.Row="1" Grid.ColumnSpan="3" HorizontalScrollBarVisibility="Disabled">
+
+                <Grid x:Name="MaterialsPanel" Grid.Row="2" Grid.ColumnSpan="3">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <ComboBox x:Name="ComboBoxAddMaterial" materialDesign:HintAssist.Hint="Материал*" 
+                              Style="{DynamicResource MaterialDesignFloatingHintComboBox}" 
+                              HorizontalAlignment="Center" Grid.Column="0" Grid.Row="0" Width="300" Margin="10"
+                              VerticalAlignment="Center">
+                        <ComboBoxItem Content="Ботинки"/>
+                        <ComboBoxItem Content="Футболка"/>
+                        <ComboBoxItem Content="Гнев Руслана"/>
+                        <ComboBoxItem Content="Заебись проект"/>
+                    </ComboBox>
+
+
+                    <TextBox x:Name="TextBoxAddMaterial" Grid.Row="0" Margin="10" 
+                             materialDesign:HintAssist.Hint="Артикул" Width="100"
+                             Style="{DynamicResource MaterialDesignFloatingHintTextBox}" 
+                             VerticalAlignment="Center" Foreground="Black" Grid.Column="1"
+                             HorizontalAlignment="Center">
+                    </TextBox>
+
+                    <Button x:Name="btnDelInfo" Grid.Column="2" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" 
+                            Padding="0" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Red" 
+                            HorizontalAlignment="Center" ToolTip="Материалы" VerticalAlignment="Center" Visibility="Collapsed">
+                        <materialDesign:PackIcon Kind="Delete" Width="30" Height="30"/>
+                    </Button>
+
+                </Grid>
+
+            </ScrollViewer>
+
+            <Button x:Name="btnAddInfo" Grid.Column="0" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" 
+                            Padding="0" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Red" 
+                            HorizontalAlignment="Center" ToolTip="Материалы" VerticalAlignment="Center" Grid.Row="2">
+                <materialDesign:PackIcon Kind="Delete" Width="30" Height="30"/>
+            </Button>
+
+
+            <Button x:Name="Material" Grid.Column="2" 
+                    Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}"
+                    Width="30" Height="30" Padding="0" Background="{x:Null}" 
+                    BorderBrush="{x:Null}" Foreground="{x:Null}" 
+                VerticalAlignment="Top" HorizontalAlignment="Center"  
+                     MouseLeave="Material_MouseLeave" MouseEnter="Material_MouseEnter"  >
+                <materialDesign:PackIcon Kind="Close" Foreground="Black"/>
+            </Button>
+
+
+            <Button x:Name="btnAddMaterials" Grid.Row="10" HorizontalAlignment="Left" Margin="10" Width="200" 
+                    Content="Добавить на склад" Foreground="Gray" Background="{x:Null}"
+                    BorderBrush="Gray" Grid.ColumnSpan="2" Style="{DynamicResource MaterialDesignOutlinedButton}"
+                    Click="btnAddMaterials_Click"/>
+
+            <Button x:Name="btnCloseAddMaterial" Grid.Row="10" HorizontalAlignment="Right" 
+                    Margin="10" Width="150" Content="Отмена" Foreground="Gray" 
+                    Background="{x:Null}"
+                    BorderBrush="Gray" Grid.ColumnSpan="2" Style="{DynamicResource MaterialDesignOutlinedButton}"/>
+        </Grid>
+        <!--#endregion-->
     </Grid>
 </UserControl>

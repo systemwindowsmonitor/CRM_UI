@@ -1,53 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
-
-namespace CRM_UI.Models
+﻿namespace CRM_UI.Models
 {
-    class TodoModel
+    class ProductModel : BaseModel
     {
-        private string _vendorcode;
-        public string vendorcode
-        {
-            get { return _vendorcode; }
-            set { _vendorcode = value; }
-        }
-        //public Image image (string filename);
-        private string _Title;
-        public string Title
-        {
-            get { return _Title; }
-            set { _Title = value; }
-        }
+       
         private string _Measurements;
         public string Measurements
         {
             get { return _Measurements; }
             set { _Measurements = value; }
         }
-        private double _CostPrice;
-        public double CostPrice
+        private string _CostPrice;
+        public string CostPrice
         {
             get { return _CostPrice; }
             set { _CostPrice = value; }
         }
-        private double _Price;
-        public double Price
+        private string _Price;
+        public string Price
         {
             get { return _Price; }
             set { _Price = value; }
         }
-        private double _Weight;
-        public double Weight
+        private string _Weight;
+        public string Weight
         {
             get { return _Weight; }
             set { _Weight = value; }
         }
-        private double _Volume;
-        public double Volume
+        private string _Volume;
+        public string Volume
         {
             get { return _Volume; }
             set { _Volume = value; }
@@ -58,8 +39,8 @@ namespace CRM_UI.Models
             get { return _Url; }
             set { _Url = value; }
         }
-        private bool _InStock;
-        public bool InStock
+        private string _InStock;
+        public string InStock
         {
             get { return _InStock; }
             set { _InStock = value; }
@@ -85,8 +66,8 @@ namespace CRM_UI.Models
             set { _Marketplace = value; }
         }
 
-        private bool _isDone;
-        public bool IsDone
+        private string _isDone;
+        public string IsDone
         {
             get { return _isDone; }
             set { _isDone = value; }

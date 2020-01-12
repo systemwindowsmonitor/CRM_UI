@@ -6,7 +6,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:CRM_UI"
         mc:Ignorable="d"
-        Title="Home_Window" Height="600" Width="1008" WindowStartupLocation="CenterScreen" WindowStyle="None" ResizeMode="NoResize">
+        Title="Home_Window" Height="600" Width="1008" WindowStartupLocation="CenterScreen" WindowStyle="None" ResizeMode="NoResize" SizeChanged="Window_SizeChanged">
     <Window.Resources>
 
         <Storyboard x:Key="OpenMenu">

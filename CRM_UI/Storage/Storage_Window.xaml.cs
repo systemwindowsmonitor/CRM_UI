@@ -1,19 +1,16 @@
-﻿using CRM_UI.Models;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Windows.Markup;
+using System.IO;
+using System.Xml;
+using System.Data.SQLite;
+using System.Data.Common;
+using CRM_UI.Models;
 
 namespace CRM_UI.Storage
 {
@@ -22,11 +19,14 @@ namespace CRM_UI.Storage
     /// </summary>
     public partial class Storage_Window : UserControl
     {
-        private BindingList<TodoModel> _todoData;
+        private BindingList<BaseModel> _todoData;
+        long selected_categorie = 0;
 
         public Storage_Window()
         {
             InitializeComponent();
+            _todoData = new BindingList<BaseModel>();
+
         }
 
         private void ButtonOpenMenu_Click(object sender, RoutedEventArgs e)
@@ -40,18 +40,63 @@ namespace CRM_UI.Storage
             ButtonOpenMenu.Visibility = Visibility.Visible;
             ButtonCloseMenu.Visibility = Visibility.Collapsed;
         }
+        private void ClearDataView()
+        {
+            //if(_todoData)
+            _todoData.Clear();
+        }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            _todoData = new BindingList<TodoModel>()
+            SelectFolders();
+            SelectGoods();
+            UpdateDataView();
+        }
+        private void SelectFolders()
+        {
+            using (SQLiteConnection conn = new SQLiteConnection(string.Format($"Data Source=TestDB.db;")))
             {
-                new TodoModel(){vendorcode = "TF3667", Title = "Ботинки", Measurements = "шт", CostPrice = 15.92, Price = 58.99, Weight = 20, Volume = 5,
-                Url = "https://intertop.ua/ua/catalog/muzhskaya_obuv/timberland-tbl-icon-6-double-collar/?gclid=CjwKCAiA_f3uBRAmEiwAzPuaM_sPzJBm0m52fmhYSmb-XRdfXYAEABhIVbFSJD2TM7uw-_NpOZe2HhoCcCMQAvD_BwE",
-                InStock = false}
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand($"SELECT * FROM Categories;", conn);
+                using (var reader = command.ExecuteReader())
+                {
+                    foreach (DbDataRecord record in reader)
+                    {
+                        _todoData.Add(new FolderModel()
+                        {
+                            vendorcode = record.GetInt64(0).ToString(),
+                            Title = record.GetString(1),
+                            icon_path = CRM_UI.String_Resources.Folder_icon_path
+                        }) ;
 
-            };
-
+                    }
+                }
+            }
+        }
+        private void UpdateDataView()
+        {
             dgXAML.ItemsSource = _todoData;
+        }
+        private void SelectGoods()
+        {
+            using (SQLiteConnection conn = new SQLiteConnection(string.Format($"Data Source=TestDB.db;")))
+            {
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand($"SELECT* FROM Goods WHERE ID_CATEGORI = {selected_categorie};", conn);
+                using (var reader = command.ExecuteReader())
+                {
+                    foreach (DbDataRecord record in reader)
+                    {
+                        _todoData.Add(new ProductModel()
+                        {
+                            vendorcode = record.GetInt64(0).ToString(),
+                            Title = record.GetString(1),
+                            Price = record.GetDouble(2).ToString()
+                        });
+
+                    }
+                }
+            }
         }
 
         private void OpenPopUpBox_Click(object sender, RoutedEventArgs e)
@@ -68,8 +113,8 @@ namespace CRM_UI.Storage
 
         private void VendorTxt_TextChanged(object sender, TextChangedEventArgs e)
         {
-            
-            
+
+
         }
 
         private void NameTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -150,17 +195,17 @@ namespace CRM_UI.Storage
 
         private void WeightTxt_TextChanged(object sender, TextChangedEventArgs e)
         {
-            
+
         }
 
         private void VolumetTxt_TextChanged(object sender, TextChangedEventArgs e)
         {
-            
+
         }
 
         private void UrltTxt_TextChanged(object sender, TextChangedEventArgs e)
         {
-            
+
         }
 
         private void TextBoxNumber_TextChanged(object sender, TextChangedEventArgs e)
@@ -175,7 +220,7 @@ namespace CRM_UI.Storage
                 btnOffAdd.Visibility = Visibility.Visible;
             }
 
-            if (TextBoxNumber.Text.Length > 0)
+            if (TextBoxNumber.Text.Length > 0 && ComboBoxMaterial.SelectedIndex >= 0)
             {
                 TextBoxNumber.BorderBrush = Brushes.Gray;
                 TextBoxNumber.Foreground = Brushes.Black;
@@ -187,30 +232,6 @@ namespace CRM_UI.Storage
             }
         }
 
-        
-
-        private void btnOnAdd_Click(object sender, RoutedEventArgs e)
-        {
-
-            
-
-            //if (ComboBoxMaterial.ItemsSource == null)
-            //{
-            //    btnOnAdd.Visibility = Visibility.Collapsed;
-            //    btnOffAdd.Visibility = Visibility.Visible;
-            //}
-            //if (ComboBoxMaterial.SelectedIndex > 0)
-            //{
-            //    ComboBoxMaterial.BorderBrush = Brushes.Gray;
-            //    ComboBoxMaterial.Foreground = Brushes.Black;
-
-
-            //    btnOnAdd.Visibility = Visibility.Visible;
-            //    btnOffAdd.Visibility = Visibility.Collapsed;
-            //    TextBoxNumber.Style = this.FindResource("MaterialDesignFloatingHintComboBox") as Style;
-            //}
-        }
-
         private void ComboBoxMaterial_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (ComboBoxMaterial.ItemsSource == null)
@@ -218,6 +239,117 @@ namespace CRM_UI.Storage
                 btnOnAdd.Visibility = Visibility.Collapsed;
                 btnOffAdd.Visibility = Visibility.Visible;
             }
+        }
+
+
+
+
+        private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            GC.Collect();
+        }
+
+        private void ComboBoxMaterial_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ComboBoxMaterial.SelectedIndex < 0)
+            {
+                ComboBoxMaterial.BorderBrush = Brushes.Red;
+                ComboBoxMaterial.Foreground = Brushes.Red;
+
+
+                btnOnAdd.Visibility = Visibility.Collapsed;
+                btnOffAdd.Visibility = Visibility.Visible;
+            }
+
+            if (ComboBoxMaterial.SelectedIndex >= 0 && TextBoxNumber.Text.Length > 0)
+            {
+                ComboBoxMaterial.BorderBrush = Brushes.Gray;
+                ComboBoxMaterial.Foreground = Brushes.Black;
+
+
+                btnOnAdd.Visibility = Visibility.Visible;
+                btnOffAdd.Visibility = Visibility.Collapsed;
+                ComboBoxMaterial.Style = this.FindResource("MaterialDesignFloatingHintComboBox") as Style;
+            }
+        }
+
+        private void TextBoxNumber_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
+        }
+
+        private void TextBoxNumber_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key.Equals(Key.Escape))
+            {
+                CancelDHMinusMaterial.Command.Execute("x:Static materialDesign:DialogHost.CloseDialogCommand");
+            }
+            if (e.Key.Equals(Key.LeftCtrl) || e.Key.Equals(Key.RightCtrl))
+                e.Handled = true;
+        }
+
+        private void TextBoxNumber_PreviewExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (e.Command == ApplicationCommands.Copy ||
+         e.Command == ApplicationCommands.Cut ||
+         e.Command == ApplicationCommands.Paste)
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void popupbox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            this.Focusable = true;
+            this.Focus();
+        }
+
+        private void Material_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Material.Style = this.FindResource("MaterialDesignFloatingActionMiniAccentButton") as Style;
+            Material.Background = Brushes.Red;
+        }
+        private void Material_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Material.Background = null;
+            Material.Style = this.FindResource("MaterialDesignFloatingActionMiniAccentButton") as Style;
+        }
+
+        private void btnAddMaterials_Click(object sender, RoutedEventArgs e)
+        {
+            MaterialsPanel.Children.Add(((Separator)XamlReader.Load(XmlReader.Create(new StringReader(XamlWriter.Save(separ))))));
+            MaterialsPanel.Children.Add(((TextBox)XamlReader.Load(XmlReader.Create(new StringReader(XamlWriter.Save(TextBoxAddMaterial))))));
+        }
+
+
+        private void dgXAML_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (dgXAML.SelectedItem is FolderModel)
+            {
+                selected_categorie = long.Parse((dgXAML.SelectedItem as FolderModel).vendorcode);
+                ClearDataView();
+                if (selected_categorie > 0)
+                {
+                    AddReturnFolder();
+                    SelectGoods();
+                }
+                else
+                {   
+                    SelectFolders();
+                }
+            }
+            if(dgXAML.SelectedItem is ProductModel)
+            {
+                MessageBox.Show((dgXAML.SelectedItem as ProductModel).Title);
+            }
+            UpdateDataView();
+        }
+
+        private void AddReturnFolder()
+        {
+            _todoData.Add(new FolderModel() { icon_path = CRM_UI.String_Resources.Folder_return_icon_path, Title = CRM_UI.String_Resources.Folder_return_text, vendorcode = "0" });
         }
     }
 }

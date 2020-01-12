@@ -85,5 +85,10 @@ namespace CRM_UI
                     break;
             }
         }
+
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            GC.Collect();
+        }
     }
 }
