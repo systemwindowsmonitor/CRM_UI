@@ -913,7 +913,7 @@
 
                     </Grid.RowDefinitions>
 
-                    <Grid>
+                    <Grid x:Name="Grid_0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
@@ -943,7 +943,7 @@
                              Style="{DynamicResource MaterialDesignFloatingHintTextBox}" 
                              VerticalAlignment="Center" Foreground="Black" Grid.Column="1"
                              HorizontalAlignment="Center" PreviewTextInput="AddNumber_Tb_PreviewTextInput"
-                             PreviewKeyDown="AddNumber_Tb_PreviewKeyDown" 
+                             
                              CommandManager.PreviewExecuted="AddNumber_Tb_PreviewExecuted"
                              TextChanged="AddNumber_Tb_TextChanged">
                         </TextBox>

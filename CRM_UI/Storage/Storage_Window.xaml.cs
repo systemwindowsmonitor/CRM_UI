@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.ComponentModel;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -425,18 +426,20 @@ namespace CRM_UI.Storage
         private void AddCbTb_Btn_Click(object sender, RoutedEventArgs e)
         {
             GenerateNewGoodLine();
-            
+
         }
         private void GenerateNewGoodLine()
         {
+            gridRow++;
             Grid innerGrid = new Grid();
+            innerGrid.Name = $"Grid_{gridRow}";
             innerGrid.ColumnDefinitions.Add(new ColumnDefinition());
             innerGrid.ColumnDefinitions.Add(new ColumnDefinition());
             innerGrid.ColumnDefinitions.Add(new ColumnDefinition());
 
             MaterialsPanel.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
             MaterialsPanel.Children.Add(innerGrid);
-            Grid.SetRow(innerGrid, ++gridRow);
+            Grid.SetRow(innerGrid, gridRow);
 
 
             var c = (ComboBox)XamlReader.Load(XmlReader.Create(new StringReader(XamlWriter.Save(AddMaterial_Cb))));
@@ -447,10 +450,17 @@ namespace CRM_UI.Storage
             Grid.SetColumn(c, 0);
             innerGrid.Children.Add(t);
             Grid.SetColumn(t, 1);
+            t.PreviewTextInput += AddNumber_Tb_PreviewTextInput;
             innerGrid.Children.Add(b);
             Grid.SetColumn(b, 2);
             b.Visibility = Visibility.Visible;
-            
+            b.Click += deleteThisGrid;
+
+        }
+
+        private void deleteThisGrid(object sender, RoutedEventArgs e)
+        {
+            MaterialsPanel.Children.Remove((sender as Button).Parent as Grid);
         }
 
         private void AddMaterialOnStorage_Btn2_Click(object sender, RoutedEventArgs e)
@@ -527,12 +537,6 @@ namespace CRM_UI.Storage
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
         }
-
-        private void AddNumber_Tb_PreviewKeyDown(object sender, KeyEventArgs e)
-        {
-
-        }
-
         private void AddNumber_Tb_PreviewExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             if (e.Command == ApplicationCommands.Copy ||
@@ -541,6 +545,7 @@ namespace CRM_UI.Storage
             {
                 e.Handled = true;
             }
+
         }
 
         private void AddNumber_Tb_TextChanged(object sender, TextChangedEventArgs e)
@@ -555,22 +560,25 @@ namespace CRM_UI.Storage
                 AddMaterialOnStorage_Btn.Visibility = Visibility.Visible;
             }
 
-            if (AddNumber_Tb.Text.Length > 0 && AddMaterial_Cb.SelectedIndex >= 0)
+            if (AddNumber_Tb.Text.Length > 0)
             {
                 AddNumber_Tb.BorderBrush = Brushes.Gray;
                 AddNumber_Tb.Foreground = Brushes.Black;
 
-
-                AddMaterialOnStorage_Btn.Visibility = Visibility.Visible;
-                AddMaterialOnStorageTwo_Btn.Visibility = Visibility.Collapsed;
+                if (AddMaterial_Cb.SelectedIndex >= 0)
+                {
+                    AddMaterialOnStorage_Btn.Visibility = Visibility.Collapsed;
+                    AddMaterialOnStorageTwo_Btn.Visibility = Visibility.Visible;
+                }
                 AddNumber_Tb.Style = this.FindResource("MaterialDesignFloatingHintTextBox") as Style;
             }
+
         }
 
         private void OpenAddMaterial_Loaded(object sender, RoutedEventArgs e)
         {
 
-           
+
             GC.Collect();
             //GenerateNewGoodLine();
         }
