@@ -121,7 +121,7 @@
     <value>..\Assets\Folder.png</value>
   </data>
   <data name="Folder_return_icon_path" xml:space="preserve">
-    <value>..\Assets\Folder_return.png</value>
+    <value>..\Assets\Return_folder.png</value>
   </data>
   <data name="Folder_return_text" xml:space="preserve">
     <value>return to root</value>

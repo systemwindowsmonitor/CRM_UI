@@ -183,6 +183,28 @@
                 <EasingDoubleKeyFrame KeyTime="0:0:0.9" Value="0"/>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
+        <Storyboard x:Key="OpenAddMaterial">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="OpenAddMaterial">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="-950"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)" Storyboard.TargetName="OpenAddMaterial">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="20"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="CloseAddMaterial">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="OpenAddMaterial">
+                <EasingDoubleKeyFrame KeyTime="0" Value="-950"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="0"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)" Storyboard.TargetName="OpenAddMaterial">
+                <EasingDoubleKeyFrame KeyTime="0" Value="20"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="0"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+
+
     </UserControl.Resources>
 
     <UserControl.Triggers>
@@ -209,6 +231,19 @@
         <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="ButtonCloseMenu">
             <BeginStoryboard Storyboard="{StaticResource CloseFilter}"/>
         </EventTrigger>
+
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="btnAddMaterial">
+            <BeginStoryboard Storyboard="{StaticResource OpenAddMaterial}"/>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="Cancel_Btn">
+            <BeginStoryboard Storyboard="{StaticResource CloseAddMaterial}"/>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="CancelMaterialWindow_Cancel">
+            <BeginStoryboard Storyboard="{StaticResource CloseAddMaterial}"/>
+        </EventTrigger>
+
+
+
     </UserControl.Triggers>
 
 
@@ -378,10 +413,10 @@
                 </TransformGroup>
             </ScrollViewer.RenderTransform>
 
-            <DataGrid x:Name="dgXAML" Margin="10" CanUserSortColumns="True" 
+            <DataGrid x:Name="dgXAML" Margin="10" CanUserSortColumns="True"
                       CanUserAddRows="True" AutoGenerateColumns="False"  SelectionChanged="dgXAML_SelectionChanged" >
                 <DataGrid.Columns>
-             
+
                     <DataGridCheckBoxColumn 
                         Binding="{Binding Path=IsDone}" 
                         ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}" 
@@ -395,7 +430,7 @@
                     <DataGridTextColumn Header="№" 
                                         Binding="{Binding Path=vendorcode}"
                                         EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}">
-                        
+
                     </DataGridTextColumn>
 
                     <DataGridTemplateColumn Header="">
@@ -405,9 +440,9 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    
 
-                    <DataGridTextColumn Header="Название" 
+
+                    <DataGridTextColumn Header="Название"
                                         Binding="{Binding Path=Title}"
                                         EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"/>
 
@@ -462,7 +497,8 @@
 
             <Button x:Name="btnAddMaterial" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" 
                     Width="40" Height="40" Padding="0" Background="White" BorderBrush="{x:Null}" Foreground="Black" 
-                    HorizontalAlignment="Center"   Margin="5" RenderTransformOrigin="0.5,0.5">
+                    HorizontalAlignment="Center"   Margin="5" RenderTransformOrigin="0.5,0.5"
+                    Click="CancelMaterialWindow_Cancel_Click">
                 <Button.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform/>
@@ -672,7 +708,7 @@
 
             <ComboBox x:Name="SelectCategorie_CB" Grid.ColumnSpan="2" Grid.Row="9" HorizontalAlignment="Left" 
                       Foreground="Black" IsSelected="True" Margin="50 0 0 0" Width="295">
-                
+
             </ComboBox>
 
             <CheckBox x:Name="IrrelevantCheckBox" IsThreeState="False" 
@@ -690,7 +726,7 @@
                     Margin="10" Width="150" Content="Отмена" Foreground="Gray" 
                     Background="{x:Null}"
                     BorderBrush="Gray" Grid.ColumnSpan="2" Style="{DynamicResource MaterialDesignOutlinedButton}"/>
-            
+
         </Grid>
         <!--#endregion-->
 
@@ -759,7 +795,7 @@
                                   IsVisibleChanged="ComboBoxMaterial_IsVisibleChanged" SelectionChanged="ComboBoxMaterial_SelectionChanged" 
                                    Loaded="ComboBoxMaterial_Loaded"
                                    >
-                            
+
                         </ComboBox>
 
                         <TextBox x:Name="TextBoxNumber" materialDesign:HintAssist.Hint="Количество*" Margin="10"
@@ -791,37 +827,40 @@
         <!--#endregion-->
 
         <!--#region Анимированная панель прихода товара на склад-->
-        <Grid x:Name="OpenAddMaterial" Grid.RowSpan="3" Width="500" Height="500" HorizontalAlignment="Right" Margin="0 0 -1000 40" 
+        <Grid x:Name="OpenAddMaterial" Grid.RowSpan="3" Width="500" Height="500" HorizontalAlignment="Right" 
+              Margin="0 0 -920 40" RenderTransformOrigin="0.5,0.5" Loaded="OpenAddMaterial_Loaded"
              >
+            <Grid.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Grid.RenderTransform>
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
+                <RowDefinition Height="3*"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="*"/>
+
             </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="auto"/>
-                
+
             </Grid.ColumnDefinitions>
 
             <Grid.Effect>
                 <DropShadowEffect BlurRadius="30" ShadowDepth="5" Color="#FFACACAC"/>
             </Grid.Effect>
 
-            <Border CornerRadius="10 0 0 10" Grid.ColumnSpan="3" Grid.RowSpan="11"/>
+            <Border CornerRadius="10 0 0 10" Grid.ColumnSpan="3" Grid.RowSpan="9"/>
 
-            <Rectangle Grid.RowSpan="11" Grid.ColumnSpan="3" Width="500" VerticalAlignment="Stretch" RadiusY="14.8" RadiusX="14.8">
+            <Rectangle Grid.RowSpan="10" Grid.ColumnSpan="3" Width="500" VerticalAlignment="Stretch" RadiusY="14.8" RadiusX="14.8">
 
                 <Rectangle.Fill>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -832,7 +871,7 @@
                 </Rectangle.Fill>
             </Rectangle>
 
-            <Border Width="60" Height="60" Margin="20" CornerRadius="80" BorderThickness="1" Background="White" 
+            <Border Width="50" Height="50" Margin="10" CornerRadius="80" BorderThickness="1" Background="White" 
                     VerticalAlignment="Bottom" HorizontalAlignment="Left">
 
                 <Border.Effect>
@@ -856,11 +895,11 @@
 
             </TextBlock>
 
-            <Separator x:Name="separ" Grid.ColumnSpan="2" VerticalAlignment="Bottom" Height="5" Width="350"/>
+            <Separator x:Name="separ" Grid.ColumnSpan="3" VerticalAlignment="Bottom" Height="5" Width="400"/>
 
             <ScrollViewer Grid.Row="1" Grid.ColumnSpan="3" HorizontalScrollBarVisibility="Disabled">
 
-                <Grid x:Name="MaterialsPanel" Grid.Row="2" Grid.ColumnSpan="3">
+                <Grid x:Name="MaterialsPanel">
 
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto"/>
@@ -870,63 +909,102 @@
 
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
-                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="auto"/>
+
                     </Grid.RowDefinitions>
 
-                    <ComboBox x:Name="ComboBoxAddMaterial" materialDesign:HintAssist.Hint="Материал*" 
-                              Style="{DynamicResource MaterialDesignFloatingHintComboBox}" 
-                              HorizontalAlignment="Center" Grid.Column="0" Grid.Row="0" Width="300" Margin="10"
-                              VerticalAlignment="Center">
-                        <ComboBoxItem Content="Ботинки"/>
-                        <ComboBoxItem Content="Футболка"/>
-                        <ComboBoxItem Content="Гнев Руслана"/>
-                        <ComboBoxItem Content="Заебись проект"/>
-                    </ComboBox>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+
+                        </Grid.RowDefinitions>
+
+                        <ComboBox x:Name="AddMaterial_Cb" materialDesign:HintAssist.Hint="Материал*" 
+                              Style="{DynamicResource MaterialDesignFloatingHintComboBox}" Grid.Column="0"
+                              HorizontalAlignment="Center" Width="300" Margin="10" Grid.Row="0"
+                              VerticalAlignment="Center" IsVisibleChanged="AddMaterial_Cb_IsVisibleChanged"
+                              SelectionChanged="AddMaterial_Cb_SelectionChanged">
+                            <ComboBoxItem Content="Ботинки"/>
+                            <ComboBoxItem Content="Футболка"/>
+                            <ComboBoxItem Content="Гнев Руслана"/>
+                            <ComboBoxItem Content="Заебись проект"/>
+                        </ComboBox>
 
 
-                    <TextBox x:Name="TextBoxAddMaterial" Grid.Row="0" Margin="10" 
-                             materialDesign:HintAssist.Hint="Артикул" Width="100"
+                        <TextBox x:Name="AddNumber_Tb" Margin="10" Grid.Row="0"
+                             materialDesign:HintAssist.Hint="Количество*" Width="100"
                              Style="{DynamicResource MaterialDesignFloatingHintTextBox}" 
                              VerticalAlignment="Center" Foreground="Black" Grid.Column="1"
-                             HorizontalAlignment="Center">
-                    </TextBox>
+                             HorizontalAlignment="Center" PreviewTextInput="AddNumber_Tb_PreviewTextInput"
+                             PreviewKeyDown="AddNumber_Tb_PreviewKeyDown" 
+                             CommandManager.PreviewExecuted="AddNumber_Tb_PreviewExecuted"
+                             TextChanged="AddNumber_Tb_TextChanged">
+                        </TextBox>
 
-                    <Button x:Name="btnDelInfo" Grid.Column="2" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" 
-                            Padding="0" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Red" 
-                            HorizontalAlignment="Center" ToolTip="Материалы" VerticalAlignment="Center" Visibility="Collapsed">
-                        <materialDesign:PackIcon Kind="Delete" Width="30" Height="30"/>
-                    </Button>
+                        <Button x:Name="DelCbTb_Btn" Grid.Column="2" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" 
+                            Padding="0" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Red" Grid.Row="0"
+                            HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed">
+                            <materialDesign:PackIcon Kind="Delete" Width="25" Height="25"/>
+                        </Button>
+                    </Grid>
+                    
 
                 </Grid>
 
             </ScrollViewer>
 
-            <Button x:Name="btnAddInfo" Grid.Column="0" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" 
-                            Padding="0" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Red" 
-                            HorizontalAlignment="Center" ToolTip="Материалы" VerticalAlignment="Center" Grid.Row="2">
-                <materialDesign:PackIcon Kind="Delete" Width="30" Height="30"/>
+            <Button x:Name="AddCbTb_Btn" Grid.Column="0" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" 
+                            Padding="0" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Blue" 
+                            HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="2" 
+                    Click="AddCbTb_Btn_Click">
+                <materialDesign:PackIcon Kind="PlusCircle" Width="30" Height="30"/>
             </Button>
 
 
-            <Button x:Name="Material" Grid.Column="2" 
+            <Button x:Name="CancelMaterialWindow_Cancel" Grid.Column="2" 
                     Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}"
-                    Width="30" Height="30" Padding="0" Background="{x:Null}" 
-                    BorderBrush="{x:Null}" Foreground="{x:Null}" 
+                    Width="25" Height="25" Padding="0" Background="{x:Null}" 
+                    BorderBrush="{x:Null}" Foreground="{x:Null}" Margin="15"
                 VerticalAlignment="Top" HorizontalAlignment="Center"  
-                     MouseLeave="Material_MouseLeave" MouseEnter="Material_MouseEnter"  >
+                     MouseLeave="CancelMaterialWindow_Cancel_MouseLeave" 
+                    MouseEnter="CancelMaterialWindow_Cancel_MouseEnter"
+                    Click="CancelMaterialWindow_Cancel_Click">
                 <materialDesign:PackIcon Kind="Close" Foreground="Black"/>
             </Button>
 
 
-            <Button x:Name="btnAddMaterials" Grid.Row="10" HorizontalAlignment="Left" Margin="10" Width="200" 
-                    Content="Добавить на склад" Foreground="Gray" Background="{x:Null}"
-                    BorderBrush="Gray" Grid.ColumnSpan="2" Style="{DynamicResource MaterialDesignOutlinedButton}"
-                    Click="btnAddMaterials_Click"/>
+            <Button x:Name="AddMaterialOnStorage_Btn" Margin="20 5 0 20" Grid.Row="3" Grid.ColumnSpan="2" Width="270" HorizontalAlignment="Left"
+                    MouseLeave="AddMaterialOnStorage_Btn_MouseLeave" MouseEnter="AddMaterialOnStorage_Btn_MouseEnter"
+                    Background="{x:Null}" Foreground="Gray" BorderBrush="Gray" Effect="{x:Null}">
+                <Grid>
+                    <TextBlock HorizontalAlignment="Center" Text="Добавить на склад"/>
+                </Grid>
+            </Button>
 
-            <Button x:Name="btnCloseAddMaterial" Grid.Row="10" HorizontalAlignment="Right" 
-                    Margin="10" Width="150" Content="Отмена" Foreground="Gray" 
-                    Background="{x:Null}"
-                    BorderBrush="Gray" Grid.ColumnSpan="2" Style="{DynamicResource MaterialDesignOutlinedButton}"/>
+            <Button x:Name="AddMaterialOnStorageTwo_Btn" Margin="20 5 0 20" Grid.Row="3" Grid.ColumnSpan="2" Width="270" 
+                    HorizontalAlignment="Left" Background="#FF00CC99" Foreground="White" BorderBrush="Gray"
+                    Click="AddMaterialOnStorageTwo_Btn_Click" Visibility="Collapsed">
+                <Grid>
+                    <TextBlock HorizontalAlignment="Center" Text="Добавить на склад"/>
+                </Grid>
+            </Button>
+
+
+
+            <Button x:Name="Cancel_Btn" Margin="0 5 20 20" Grid.Row="3" Grid.ColumnSpan="3" Width="150" HorizontalAlignment="Right"
+                    MouseLeave="Cancel_Btn_MouseLeave" MouseEnter="Cancel_Btn_MouseEnter" Click="CancelMaterialWindow_Cancel_Click"
+                    Background="{x:Null}" Foreground="Gray" BorderBrush="Gray" Effect="{x:Null}">
+                <Grid>
+                    <TextBlock HorizontalAlignment="Center" Text="Отменить"/>
+                </Grid>
+            </Button>
         </Grid>
         <!--#endregion-->
     </Grid>

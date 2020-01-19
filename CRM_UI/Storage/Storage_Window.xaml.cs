@@ -21,6 +21,7 @@ namespace CRM_UI.Storage
     {
         private BindingList<BaseModel> _todoData;
         long selected_categorie = 0;
+        private int gridRow = 0;
 
         public Storage_Window()
         {
@@ -67,7 +68,7 @@ namespace CRM_UI.Storage
                             vendorcode = record.GetInt64(0).ToString(),
                             Title = record.GetString(1),
                             icon_path = CRM_UI.String_Resources.Folder_icon_path
-                        }) ;
+                        });
                     }
                 }
             }
@@ -305,23 +306,16 @@ namespace CRM_UI.Storage
             this.Focus();
         }
 
-        private void Material_MouseEnter(object sender, MouseEventArgs e)
+        private void CancelMaterialWindow_Cancel_MouseEnter(object sender, MouseEventArgs e)
         {
-            Material.Style = this.FindResource("MaterialDesignFloatingActionMiniAccentButton") as Style;
-            Material.Background = Brushes.Red;
+            CancelMaterialWindow_Cancel.Style = this.FindResource("MaterialDesignFloatingActionMiniAccentButton") as Style;
+            CancelMaterialWindow_Cancel.Background = Brushes.Red;
         }
-        private void Material_MouseLeave(object sender, MouseEventArgs e)
+        private void CancelMaterialWindow_Cancel_MouseLeave(object sender, MouseEventArgs e)
         {
-            Material.Background = null;
-            Material.Style = this.FindResource("MaterialDesignFloatingActionMiniAccentButton") as Style;
+            CancelMaterialWindow_Cancel.Background = null;
+            CancelMaterialWindow_Cancel.Style = this.FindResource("MaterialDesignFloatingActionMiniAccentButton") as Style;
         }
-
-        private void btnAddMaterials_Click(object sender, RoutedEventArgs e)
-        {
-            MaterialsPanel.Children.Add(((Separator)XamlReader.Load(XmlReader.Create(new StringReader(XamlWriter.Save(separ))))));
-            MaterialsPanel.Children.Add(((TextBox)XamlReader.Load(XmlReader.Create(new StringReader(XamlWriter.Save(TextBoxAddMaterial))))));
-        }
-
 
         private void dgXAML_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -335,11 +329,11 @@ namespace CRM_UI.Storage
                     SelectGoods();
                 }
                 else
-                {   
+                {
                     SelectFolders();
                 }
             }
-            if(dgXAML.SelectedItem is ProductModel)
+            if (dgXAML.SelectedItem is ProductModel)
             {
                 MessageBox.Show((dgXAML.SelectedItem as ProductModel).Title);
             }
@@ -363,7 +357,7 @@ namespace CRM_UI.Storage
             GC.Collect();
             ClearDataView();
             SelectFolders();
-            UpdateDataView(); 
+            UpdateDataView();
 
         }
 
@@ -426,6 +420,164 @@ namespace CRM_UI.Storage
                     }
                 }
             }
+        }
+
+        private void AddCbTb_Btn_Click(object sender, RoutedEventArgs e)
+        {
+            GenerateNewGoodLine();
+            
+        }
+        private void GenerateNewGoodLine()
+        {
+            Grid innerGrid = new Grid();
+            innerGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            innerGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            innerGrid.ColumnDefinitions.Add(new ColumnDefinition());
+
+            MaterialsPanel.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+            MaterialsPanel.Children.Add(innerGrid);
+            Grid.SetRow(innerGrid, ++gridRow);
+
+
+            var c = (ComboBox)XamlReader.Load(XmlReader.Create(new StringReader(XamlWriter.Save(AddMaterial_Cb))));
+            var t = ((TextBox)XamlReader.Load(XmlReader.Create(new StringReader(XamlWriter.Save(AddNumber_Tb)))));
+            var b = (Button)XamlReader.Load(XmlReader.Create(new StringReader(XamlWriter.Save(DelCbTb_Btn))));
+
+            innerGrid.Children.Add(c);
+            Grid.SetColumn(c, 0);
+            innerGrid.Children.Add(t);
+            Grid.SetColumn(t, 1);
+            innerGrid.Children.Add(b);
+            Grid.SetColumn(b, 2);
+            b.Visibility = Visibility.Visible;
+            
+        }
+
+        private void AddMaterialOnStorage_Btn2_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void AddMaterialOnStorage_Btn_MouseLeave(object sender, MouseEventArgs e)
+        {
+            AddMaterialOnStorage_Btn.Background = null;
+            AddMaterialOnStorage_Btn.Foreground = Brushes.Gray;
+            AddMaterialOnStorage_Btn.BorderBrush = Brushes.Gray;
+        }
+
+        private void AddMaterialOnStorage_Btn_MouseEnter(object sender, MouseEventArgs e)
+        {
+            AddMaterialOnStorage_Btn.Background = Brushes.Gray;
+            AddMaterialOnStorage_Btn.Foreground = Brushes.White;
+        }
+
+        private void Cancel_Btn_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Cancel_Btn.Background = null;
+            Cancel_Btn.Foreground = Brushes.Gray;
+            Cancel_Btn.BorderBrush = Brushes.Gray;
+        }
+
+        private void Cancel_Btn_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Cancel_Btn.Background = Brushes.Gray;
+            Cancel_Btn.Foreground = Brushes.White;
+        }
+
+        private void AddMaterialOnStorageTwo_Btn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void AddMaterial_Cb_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (AddMaterial_Cb.ItemsSource == null)
+            {
+                AddMaterialOnStorageTwo_Btn.Visibility = Visibility.Collapsed;
+                AddMaterialOnStorage_Btn.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void AddMaterial_Cb_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (AddMaterial_Cb.SelectedIndex < 0)
+            {
+                AddMaterial_Cb.BorderBrush = Brushes.Red;
+                AddMaterial_Cb.Foreground = Brushes.Red;
+
+
+                AddMaterialOnStorageTwo_Btn.Visibility = Visibility.Collapsed;
+                AddMaterialOnStorage_Btn.Visibility = Visibility.Visible;
+            }
+
+            if (AddMaterial_Cb.SelectedIndex >= 0 && AddNumber_Tb.Text.Length > 0)
+            {
+                AddMaterial_Cb.BorderBrush = Brushes.Gray;
+                AddMaterial_Cb.Foreground = Brushes.Black;
+
+
+                AddMaterialOnStorageTwo_Btn.Visibility = Visibility.Visible;
+                AddMaterialOnStorage_Btn.Visibility = Visibility.Collapsed;
+                AddMaterial_Cb.Style = this.FindResource("MaterialDesignFloatingHintComboBox") as Style;
+            }
+        }
+
+        private void AddNumber_Tb_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
+        }
+
+        private void AddNumber_Tb_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+
+        }
+
+        private void AddNumber_Tb_PreviewExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (e.Command == ApplicationCommands.Copy ||
+         e.Command == ApplicationCommands.Cut ||
+         e.Command == ApplicationCommands.Paste)
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void AddNumber_Tb_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (AddNumber_Tb.Text == "")
+            {
+                AddNumber_Tb.BorderBrush = Brushes.Red;
+                AddNumber_Tb.Foreground = Brushes.Red;
+
+
+                AddMaterialOnStorageTwo_Btn.Visibility = Visibility.Collapsed;
+                AddMaterialOnStorage_Btn.Visibility = Visibility.Visible;
+            }
+
+            if (AddNumber_Tb.Text.Length > 0 && AddMaterial_Cb.SelectedIndex >= 0)
+            {
+                AddNumber_Tb.BorderBrush = Brushes.Gray;
+                AddNumber_Tb.Foreground = Brushes.Black;
+
+
+                AddMaterialOnStorage_Btn.Visibility = Visibility.Visible;
+                AddMaterialOnStorageTwo_Btn.Visibility = Visibility.Collapsed;
+                AddNumber_Tb.Style = this.FindResource("MaterialDesignFloatingHintTextBox") as Style;
+            }
+        }
+
+        private void OpenAddMaterial_Loaded(object sender, RoutedEventArgs e)
+        {
+
+           
+            GC.Collect();
+            //GenerateNewGoodLine();
+        }
+
+        private void CancelMaterialWindow_Cancel_Click(object sender, RoutedEventArgs e)
+        {
+            GC.Collect();
         }
     }
 }

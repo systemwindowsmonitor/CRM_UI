@@ -70,7 +70,7 @@ namespace CRM_UI {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на ..\Assets\Folder_return.png.
+        ///   Ищет локализованную строку, похожую на ..\Assets\Return_folder.png.
         /// </summary>
         internal static string Folder_return_icon_path {
             get {
