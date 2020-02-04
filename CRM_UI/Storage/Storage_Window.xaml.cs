@@ -12,6 +12,8 @@ using System.Xml;
 using System.Data.SQLite;
 using System.Data.Common;
 using CRM_UI.Models;
+using CRM_UI.Storage.Chat;
+using System.Collections.Generic;
 
 namespace CRM_UI.Storage
 {
@@ -586,6 +588,63 @@ namespace CRM_UI.Storage
         private void CancelMaterialWindow_Cancel_Click(object sender, RoutedEventArgs e)
         {
             GC.Collect();
+        }
+
+        private void ContactGrupe_btn_Click(object sender, RoutedEventArgs e)
+        {
+            //int index = int.Parse(((Button)e.Source).Uid);
+
+            //GridCursor.Margin = new Thickness(10 + (170 * index), 0, 0, 0);
+
+            //switch (index)
+            //{
+            //    case 0:
+            //        ChatUsers_Grid.Children.Clear();
+            //        ChatUsers_Grid.Children.Add(new UserControlListUser());
+            //        break;
+
+            //    case 1:
+            //        ChatUsers_Grid.Children.Clear();
+            //        ChatUsers_Grid.Children.Add(new UserControlListAdmin());
+            //        break;
+            //    default:
+            //        break;
+            //}
+
+
+        }
+
+        private void StartChatWithUser_btn_Click(object sender, RoutedEventArgs e)
+        {
+
+            
+        }
+
+        private void Chat_btn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void WindowChat_Initialized(object sender, EventArgs e)
+        {
+            //List<string> users = new List<string>();
+            //using (SQLiteConnection conn = new SQLiteConnection(string.Format($"Data Source=TestDB.db;")))
+            //{
+            //    conn.Open();
+            //    SQLiteCommand command = new SQLiteCommand($"SELECT* FROM [User];", conn);
+            //    using (var reader = command.ExecuteReader())
+            //    {
+            //        foreach (DbDataRecord record in reader)
+            //        {
+            //            users.Add(record.GetValue(0).ToString());
+
+            //        }
+            //    }
+            //}
+            //foreach (var item in users)
+            //{
+            //    ChatUsers_Grid.Children.Add(new Label() { Content = item });
+            //}
         }
     }
 }

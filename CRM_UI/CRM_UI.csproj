@@ -84,6 +84,18 @@
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\FolderModel.cs" />
     <Compile Include="Models\ProductModel.cs" />
+    <Compile Include="Storage\Chat\UserControlListAdmin.xaml.cs">
+      <DependentUpon>UserControlListAdmin.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Storage\Chat\UserControlListUser.xaml.cs">
+      <DependentUpon>UserControlListUser.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Storage\Chat\WindowHomeChat.xaml.cs">
+      <DependentUpon>WindowHomeChat.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Storage\Chat\Window_Messeg.xaml.cs">
+      <DependentUpon>Window_Messeg.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Storage\ObservableObject.cs" />
     <Compile Include="Storage\Storage_Window.xaml.cs">
       <DependentUpon>Storage_Window.xaml</DependentUpon>
@@ -95,6 +107,22 @@
       <DependentUpon>String_Resources.resx</DependentUpon>
     </Compile>
     <Page Include="Home_Window.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Storage\Chat\UserControlListAdmin.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Storage\Chat\UserControlListUser.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Storage\Chat\WindowHomeChat.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Storage\Chat\Window_Messeg.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

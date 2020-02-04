@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CRM_UI.Storage"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:local1="clr-namespace:CRM_UI.Storage.Chat"
              mc:Ignorable="d" Loaded="UserControl_Loaded" SizeChanged="UserControl_SizeChanged" >
 
     <UserControl.Resources>
@@ -183,24 +184,31 @@
                 <EasingDoubleKeyFrame KeyTime="0:0:0.9" Value="0"/>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
+
         <Storyboard x:Key="OpenAddMaterial">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="OpenAddMaterial">
                 <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="-950"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.6" Value="-950"/>
             </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)" Storyboard.TargetName="OpenAddMaterial">
-                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="20"/>
-            </DoubleAnimationUsingKeyFrames>
+
         </Storyboard>
         <Storyboard x:Key="CloseAddMaterial">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="OpenAddMaterial">
                 <EasingDoubleKeyFrame KeyTime="0" Value="-950"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.6" Value="0"/>
             </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)" Storyboard.TargetName="OpenAddMaterial">
-                <EasingDoubleKeyFrame KeyTime="0" Value="20"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="0"/>
+        </Storyboard>
+
+        <Storyboard x:Key="OpenChat">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="WindowChat">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.7" Value="-1220"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="CloseChat">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="WindowChat">
+                <EasingDoubleKeyFrame KeyTime="0" Value="-1220"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.7" Value="0"/>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
 
@@ -242,8 +250,15 @@
             <BeginStoryboard Storyboard="{StaticResource CloseAddMaterial}"/>
         </EventTrigger>
 
-
-
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="Chat_btn">
+            <BeginStoryboard Storyboard="{StaticResource OpenChat}"/>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="CloseChat_btn">
+            <BeginStoryboard Storyboard="{StaticResource CloseChat}"/>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="CloseHomeChat_btn">
+            <BeginStoryboard Storyboard="{StaticResource CloseChat}"/>
+        </EventTrigger>
     </UserControl.Triggers>
 
 
@@ -275,19 +290,19 @@
             <Button x:Name="ButtonMaterials" Grid.Column="0" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" 
                      Padding="0" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Green" 
                     HorizontalAlignment="Center" ToolTip="Материалы" Margin="10">
-                <materialDesign:PackIcon Kind="Folder" Width="30" Height="30"/>
+                <materialDesign:PackIcon Kind="Folder" Width="25" Height="25"/>
             </Button>
 
             <Button x:Name="ButtonOperationsHistory" Grid.Column="1" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" 
                      Padding="0" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Green" 
                     HorizontalAlignment="Center" ToolTip="История операций" Margin="10">
-                <materialDesign:PackIcon Kind="FolderClock" Width="30" Height="30"/>
+                <materialDesign:PackIcon Kind="FolderClock" Width="25" Height="25"/>
             </Button>
 
             <Button x:Name="ButtonRequestsForMaterials" Grid.Column="2" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" 
                      Padding="0" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Green" 
                     HorizontalAlignment="Center" ToolTip="Заявки на материалы" Margin="10">
-                <materialDesign:PackIcon Kind="ZipDisk" Width="30" Height="30"/>
+                <materialDesign:PackIcon Kind="ZipDisk" Width="25" Height="25"/>
             </Button>
 
             <!--Поиск-->
@@ -338,17 +353,18 @@
             </materialDesign:PopupBox>
 
             <Button x:Name="BtnAlert" Grid.Column="6"
-                    ToolTip="Оповещения" HorizontalAlignment="Center" VerticalAlignment="Center"
+                    HorizontalAlignment="Center" VerticalAlignment="Center"
                     Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" 
                     Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Green" Margin="10">
-                <materialDesign:PackIcon Kind="BellOutline" Width="30" Height="30"/>
+                <materialDesign:PackIcon Kind="BellOutline" Width="25" Height="25"/>
             </Button>
 
-            <Button x:Name="BtnAlert1" Grid.Column="7"
-                    ToolTip="Оповещения" HorizontalAlignment="Center" VerticalAlignment="Center"
+            <Button x:Name="Chat_btn" Grid.Column="7"
+                    HorizontalAlignment="Center" VerticalAlignment="Center"
                     Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" 
-                    Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Green" Margin="10">
-                <materialDesign:PackIcon Kind="BellOutline" Width="30" Height="30"/>
+                    Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Green" Margin="10"
+                    Click="Chat_btn_Click">
+                <materialDesign:PackIcon Kind="ChatBubbleOutline" Width="25" Height="25"/>
             </Button>
 
 
@@ -802,7 +818,7 @@
                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" 
                                  Foreground="Black" Grid.Row="2" Grid.ColumnSpan="2"  MaxWidth="190" 
                                  TextChanged="TextBoxNumber_TextChanged" 
-                                 PreviewTextInput="TextBoxNumber_PreviewTextInput" 
+                                 PreviewTextInput="TextBoxNumber_PreviewTextInput"
                                  PreviewKeyDown="TextBoxNumber_PreviewKeyDown" 
                                  CommandManager.PreviewExecuted="TextBoxNumber_PreviewExecuted" />
 
@@ -954,7 +970,7 @@
                             <materialDesign:PackIcon Kind="Delete" Width="25" Height="25"/>
                         </Button>
                     </Grid>
-                    
+
 
                 </Grid>
 
@@ -1006,6 +1022,43 @@
                 </Grid>
             </Button>
         </Grid>
+        <!--#endregion-->
+
+        <!--#region Внутрений чат-->
+        <StackPanel x:Name="WindowChat" Grid.RowSpan="3" Background="White" Width="400" Height="630" 
+                    Initialized="WindowChat_Initialized" Margin="0 0 -2950 0" RenderTransformOrigin="0.5,0.5" >
+            <StackPanel.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </StackPanel.RenderTransform>
+
+            <StackPanel.Effect>
+                <DropShadowEffect BlurRadius="30" ShadowDepth="5" Color="#FFACACAC"/>
+            </StackPanel.Effect>
+
+
+
+
+            <materialDesign:Transitioner SelectedIndex="0" AutoApplyTransitionOrigins="True">
+                <Grid>
+                    <local1:WindowHomeChat x:Name="windowHomeChat"/>
+                </Grid>
+                <materialDesign:TransitionerSlide>
+                    <materialDesign:TransitionerSlide.BackwardWipe>
+                        <materialDesign:CircleWipe/>
+                    </materialDesign:TransitionerSlide.BackwardWipe>
+                    <materialDesign:TransitionerSlide.ForwardWipe>
+                        <materialDesign:SlideWipe Direction="Right"/>
+                    </materialDesign:TransitionerSlide.ForwardWipe>
+                    <local1:Window_Messeg/>
+                </materialDesign:TransitionerSlide>
+
+            </materialDesign:Transitioner>
+        </StackPanel>
         <!--#endregion-->
     </Grid>
 </UserControl>

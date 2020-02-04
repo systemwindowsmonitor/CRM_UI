@@ -1,20 +1,12 @@
 ﻿using CRM_UI.Storage;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace CRM_UI
 {
+
     /// <summary>
     /// Логика взаимодействия для Home_Window.xaml
     /// </summary>
@@ -23,6 +15,7 @@ namespace CRM_UI
         public Home_Window()
         {
             InitializeComponent();
+            Process.Start("Test_Bot.exe");
         }
 
         private void btnExit_Click(object sender, RoutedEventArgs e)
