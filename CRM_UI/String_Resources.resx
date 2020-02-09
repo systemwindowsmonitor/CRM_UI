@@ -126,6 +126,10 @@
   <data name="Folder_return_text" xml:space="preserve">
     <value>return to root</value>
   </data>
+  <data name="pathToDatabase" xml:space="preserve">
+    <value>TestDB.db</value>
+    <comment>путь к файлу с базой данных</comment>
+  </data>
   <data name="WindowTitle" xml:space="preserve">
     <value>TeleCRM</value>
   </data>

@@ -88,6 +88,15 @@ namespace CRM_UI {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на TestDB.db.
+        /// </summary>
+        internal static string pathToDatabase {
+            get {
+                return ResourceManager.GetString("pathToDatabase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на TeleCRM.
         /// </summary>
         internal static string WindowTitle {

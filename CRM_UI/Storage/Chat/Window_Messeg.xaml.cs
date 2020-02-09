@@ -1,18 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Data.Common;
+using System.Data.SQLite;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace CRM_UI.Storage.Chat
 {
@@ -52,16 +43,26 @@ namespace CRM_UI.Storage.Chat
 
         private void Return_btn_Click(object sender, RoutedEventArgs e)
         {
-            //StackPanel s = (this.Parent as StackPanel);
-            //s.Children.Clear();
-            //var r = (s.Parent as Grid);
-            //r.Children.Clear();
-
-            
-
             GC.Collect();
         }
 
-        
+        private void MessegingWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            using (SQLiteConnection conn = new SQLiteConnection(string.Format($"Data Source={String_Resources.pathToDatabase}")))
+            {
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand("SELECT Orders.ID, User.Login,Categories.NAME, Goods.NAME, Goods.PRICE FROM Orders INNER JOIN User ON Orders.ID_USER = User.Login_id INNER JOIN Goods ON Orders.ID_GOODS = Goods.ID INNER JOIN Categories ON Orders.ID_CATEGORIES = Categories.ID WHERE User.Login == 'Ruslan_Fateev'", conn);
+                using (var reader = command.ExecuteReader())
+                {
+                    foreach (DbDataRecord record in reader)
+                    {
+                        MessegingPanel.Children.Add(new UserControlMessageReceived(
+                            $"Заказ !\n{record.GetValue(0)}\n{record.GetValue(1)}\n{record.GetValue(2)}\n{record.GetValue(3)}\nЦена {record.GetValue(4)}"
+                            ));
+
+                    }
+                }
+            }
+        }
     }
 }

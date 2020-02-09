@@ -9,8 +9,78 @@
 
     
     
-    <StackPanel x:Name="MessegingWindow" Background="White" >
-        <Grid Height="80" Background="White">
+    <Grid x:Name="MessegingWindow" Background="White" Loaded="MessegingWindow_Loaded">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        
+        <StackPanel Orientation="Horizontal" Height="80" VerticalAlignment="Top" Background="White" Grid.Row="0">
+            <StackPanel.Effect>
+                <DropShadowEffect BlurRadius="30" ShadowDepth="1"/>
+            </StackPanel.Effect>
+            <Grid Width="400">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <Button x:Name="Return_btn" Grid.Column="0" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" 
+                        Width="25" Height="25" Padding="0" Background="{x:Null}" BorderBrush="{x:Null}" 
+                        Foreground="{x:Null}" Margin="15" VerticalAlignment="Center" HorizontalAlignment="Center"  
+                        Click="Return_btn_Click"
+                    Command="{x:Static materialDesign:Transitioner.MovePreviousCommand}">
+                    <materialDesign:PackIcon Kind="ArrowBack" Foreground="Black" Width="25" Height="25"/>
+
+                </Button>
+
+                <Button x:Name="CloseChat_btn" Grid.Column="2" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" 
+                        Width="25" Height="25" Padding="0" Background="{x:Null}" BorderBrush="{x:Null}" 
+                        Foreground="{x:Null}" Margin="15" VerticalAlignment="Center" HorizontalAlignment="Right"  
+                        >
+                    <materialDesign:PackIcon Kind="Close" Foreground="Black"/>
+
+                </Button>
+            </Grid>
+
+        </StackPanel>
+
+        <ScrollViewer VerticalScrollBarVisibility="Visible" Grid.Row="1" >
+            <StackPanel x:Name="MessegingPanel" VerticalAlignment="Top" >
+                <!--<local:UserControlMessageReceived HorizontalAlignment="Left"/>
+                <local:UserControlMessageSent HorizontalAlignment="Right"/>-->
+            </StackPanel>
+        </ScrollViewer>
+       
+        <Border Background="#FF00CC99" VerticalAlignment="Bottom" Grid.Row="2">
+            <Grid Margin="0 10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="70"/>
+                    <ColumnDefinition Width="70"/>
+                    <ColumnDefinition Width="70"/>
+                </Grid.ColumnDefinitions>
+                <TextBox x:Name="Messeg_Txt" Grid.ColumnSpan="2" MaxHeight="80" TextWrapping="Wrap" Margin="5" 
+                             AcceptsReturn="True" VerticalScrollBarVisibility="Auto" TextChanged="Messeg_Txt_TextChanged" />
+                <Button x:Name="SendMesseg_Btn" Grid.Column="3" VerticalAlignment="Bottom" Visibility="Collapsed"
+                            Style="{StaticResource MaterialDesignFloatingActionMiniButton}" Background="#FF33425C">
+                    <materialDesign:PackIcon Kind="Send"/>
+                </Button>
+
+                <Button x:Name="SendMessegOff_Btn" Grid.Column="3" VerticalAlignment="Bottom" Background="#FFE0E0E0"
+                            Style="{StaticResource MaterialDesignFloatingActionMiniButton}">
+                    <materialDesign:PackIcon Kind="Send" Foreground="{StaticResource PrimaryHueDarkBrush}"/>
+                </Button>
+                <Button Grid.Column="2" Background="{x:Null}" VerticalAlignment="Bottom" 
+                            Style="{StaticResource MaterialDesignFloatingActionMiniButton}">
+                    <materialDesign:PackIcon Kind="Attachment" Foreground="{StaticResource PrimaryHueDarkBrush}"/>
+                </Button>
+
+            </Grid>
+        </Border>
+
+        <!--<Grid Height="80" Background="White">
             <Grid.Effect>
                 <DropShadowEffect BlurRadius="30" ShadowDepth="5" Color="#FFACACAC"/>
             </Grid.Effect>
@@ -37,9 +107,9 @@
                 <materialDesign:PackIcon Kind="Close" Foreground="Black"/>
 
             </Button>
-        </Grid>
+        </Grid>-->
 
-        <Grid Height="390" Margin="0 10 0 0">
+        <!--<Grid Height="390" Margin="0 10 0 0">
             <TextBlock x:Name="Text"/>
         </Grid>
 
@@ -70,7 +140,7 @@
                     
                 </Grid>
             </Border>
-        </Grid>
+        </Grid>-->
 
         <!--<Grid Height="50">
             <Button x:Name="SendMesseg_Btn" Style="{StaticResource MaterialDesignRaisedButton}" Content="Отправить" Margin="10" Foreground="WhiteSmoke" 
@@ -79,5 +149,5 @@
             <Button x:Name="SendMessegOff_Btn" Style="{StaticResource MaterialDesignFlatButton}" Content="Отправить" Margin="10" Foreground="DimGray"
                     Background="#FFE0E0E0"/>
         </Grid>-->
-    </StackPanel>
+    </Grid>
 </UserControl>

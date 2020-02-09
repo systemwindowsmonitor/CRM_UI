@@ -90,6 +90,12 @@
     <Compile Include="Storage\Chat\UserControlListUser.xaml.cs">
       <DependentUpon>UserControlListUser.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Storage\Chat\UserControlMessageReceived.xaml.cs">
+      <DependentUpon>UserControlMessageReceived.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Storage\Chat\UserControlMessageSent.xaml.cs">
+      <DependentUpon>UserControlMessageSent.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Storage\Chat\WindowHomeChat.xaml.cs">
       <DependentUpon>WindowHomeChat.xaml</DependentUpon>
     </Compile>
@@ -115,6 +121,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Storage\Chat\UserControlListUser.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Storage\Chat\UserControlMessageReceived.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Storage\Chat\UserControlMessageSent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
