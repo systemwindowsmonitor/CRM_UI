@@ -12,9 +12,16 @@ namespace CRM_UI.Storage.Chat
     /// </summary>
     public partial class Window_Messeg : UserControl
     {
+        private string userLogin = String.Empty;
         public Window_Messeg()
         {
             InitializeComponent();
+       
+        }
+        public Window_Messeg(string userLogin)
+        {
+            InitializeComponent();
+            this.userLogin = userLogin;
         }
 
         private void Messeg_Txt_TextChanged(object sender, TextChangedEventArgs e)
@@ -51,14 +58,13 @@ namespace CRM_UI.Storage.Chat
             using (SQLiteConnection conn = new SQLiteConnection(string.Format($"Data Source={String_Resources.pathToDatabase}")))
             {
                 conn.Open();
-                SQLiteCommand command = new SQLiteCommand("SELECT Orders.ID, User.Login,Categories.NAME, Goods.NAME, Goods.PRICE FROM Orders INNER JOIN User ON Orders.ID_USER = User.Login_id INNER JOIN Goods ON Orders.ID_GOODS = Goods.ID INNER JOIN Categories ON Orders.ID_CATEGORIES = Categories.ID WHERE User.Login == 'Ruslan_Fateev'", conn);
+                SQLiteCommand command = new SQLiteCommand($"SELECT Orders.ID, User.Login,Categories.NAME, Goods.NAME, Goods.PRICE, Orders.ADD_Time FROM Orders INNER JOIN User ON Orders.ID_USER = User.Login_id INNER JOIN Goods ON Orders.ID_GOODS = Goods.ID INNER JOIN Categories ON Orders.ID_CATEGORIES = Categories.ID WHERE User.Login == '{this.userLogin}'", conn);
                 using (var reader = command.ExecuteReader())
                 {
                     foreach (DbDataRecord record in reader)
                     {
                         MessegingPanel.Children.Add(new UserControlMessageReceived(
-                            $"Заказ !\n{record.GetValue(0)}\n{record.GetValue(1)}\n{record.GetValue(2)}\n{record.GetValue(3)}\nЦена {record.GetValue(4)}"
-                            ));
+                            $"Заказ !\n{record.GetValue(0)}\n{record.GetValue(1)}\n{record.GetValue(2)}\n{record.GetValue(3)}\nЦена {record.GetValue(4)}", record.GetValue(5).ToString()));
 
                     }
                 }

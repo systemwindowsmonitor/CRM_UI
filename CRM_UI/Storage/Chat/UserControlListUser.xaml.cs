@@ -23,6 +23,20 @@ namespace CRM_UI.Storage.Chat
         public UserControlListUser()
         {
             InitializeComponent();
+           
+        }
+        public UserControlListUser(string imageURL, string login, string msgCount)
+        {
+            InitializeComponent();
+            this.ImgUser.ImageSource = new BitmapImage(new Uri(imageURL));
+            this.UserLogin_TB.Text = login;
+            this.MessegeCout_TB.Text = msgCount;
+        }
+
+        private void StartChatWithUser_btn_Click(object sender, RoutedEventArgs e)
+        {
+            Window_Messeg m =  new Window_Messeg(this.UserLogin_TB.Text);
+            
         }
     }
 }

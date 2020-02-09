@@ -12,10 +12,12 @@ namespace CRM_UI.Storage.Chat
         {
             InitializeComponent();
         }
-        public UserControlMessageReceived(string user_msg)
+        public UserControlMessageReceived(string user_msg, string user_time)
         {
             InitializeComponent();
             this.TextFromUser_TB.Text = user_msg;
+            this.OrderTime_TB.Text = user_time;
+
         }
 
         private void Grid_Loaded(object sender, RoutedEventArgs e)

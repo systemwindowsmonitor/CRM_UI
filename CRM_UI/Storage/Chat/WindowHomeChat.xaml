@@ -62,8 +62,8 @@
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
-            <StackPanel>
-                <Button x:Name="StartChatWithUser_btn" Margin="10" Background="{x:Null}" BorderBrush="#FF00CC99" 
+            <StackPanel x:Name="UserWithOrders_SP" Loaded="UserWithOrders_SP_Loaded">
+                <!--<Button x:Name="StartChatWithUser_btn" Margin="10" Background="{x:Null}" BorderBrush="#FF00CC99" 
                     Height="50" Command="{x:Static materialDesign:Transitioner.MoveNextCommand}">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -90,7 +90,7 @@
                             <TextBlock FontSize="11" Text="2" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                     </Grid>
-                </Button>
+                </Button>-->
 
             </StackPanel>
         </Grid>

@@ -6,11 +6,11 @@
              xmlns:local="clr-namespace:CRM_UI.Storage.Chat"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d">
-    <Grid x:Name="ListChatUsers_Grid" Height="480">
+    <Grid x:Name="ListChatUsers_Grid" >
 
-        <StackPanel>
+        <StackPanel x:Name="UserOrders_SP">
             <Button x:Name="StartChatWithUser_btn" Margin="10" Background="{x:Null}" BorderBrush="#FF00CC99" 
-                    Height="50" Command="{x:Static materialDesign:Transitioner.MoveNextCommand}">
+                    Height="50" Command="{x:Static materialDesign:Transitioner.MoveNextCommand}" CommandParameter="{Binding ElementName=UserLogin_TB, Path=Text}" >
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto"/>
@@ -19,21 +19,19 @@
                         <ColumnDefinition Width="auto"/>
 
                     </Grid.ColumnDefinitions>
-                    <Border Width="40" Height="40" CornerRadius="25" BorderBrush="White" BorderThickness="0.6">
+                    <Border  Width="40" Height="40" CornerRadius="25" BorderBrush="White" BorderThickness="0.6">
                         <Border.Background>
-                            <ImageBrush ImageSource="/Assets/face1.jpg"/>
+                            <ImageBrush x:Name="ImgUser" ImageSource="/Assets/face1.jpg"/>
                         </Border.Background>
                     </Border>
 
                     <StackPanel Grid.Column="1">
-                        <TextBlock Text="Владислав Линкий" Margin="10 0" Foreground="Black"/>
-                        <TextBlock Text="Заебись все блять..." Margin="10 0" TextTrimming="CharacterEllipsis" Opacity="0.6" 
-                                   FontSize="11" Foreground="Black"/>
+                        <TextBlock x:Name="UserLogin_TB" Text="Владислав Линкий" Margin="10 10" Foreground="Black" HorizontalAlignment="Center"/>
                     </StackPanel>
 
                     <Border Grid.Column="3" Width="20" Height="20" CornerRadius="15" Background="Gray" 
                                 HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <TextBlock FontSize="11" Text="2" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <TextBlock x:Name="MessegeCout_TB" FontSize="11" Text="2" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
                 </Grid>
             </Button>
