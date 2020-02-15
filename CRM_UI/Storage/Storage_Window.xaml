@@ -253,9 +253,9 @@
         <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="Chat_btn">
             <BeginStoryboard Storyboard="{StaticResource OpenChat}"/>
         </EventTrigger>
-        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="CloseChat_btn">
+        <!--<EventTrigger RoutedEvent="ButtonBase.Click" SourceName="CloseChat_btn">
             <BeginStoryboard Storyboard="{StaticResource CloseChat}"/>
-        </EventTrigger>
+        </EventTrigger>-->
         <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="CloseHomeChat_btn">
             <BeginStoryboard Storyboard="{StaticResource CloseChat}"/>
         </EventTrigger>
@@ -1054,7 +1054,7 @@
                     <materialDesign:TransitionerSlide.ForwardWipe>
                         <materialDesign:SlideWipe Direction="Right"/>
                     </materialDesign:TransitionerSlide.ForwardWipe>
-                    <local1:Window_Messeg/>
+                    
                 </materialDesign:TransitionerSlide>
 
             </materialDesign:Transitioner>

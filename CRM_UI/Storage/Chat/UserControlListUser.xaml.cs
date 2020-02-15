@@ -31,11 +31,13 @@ namespace CRM_UI.Storage.Chat
             this.ImgUser.ImageSource = new BitmapImage(new Uri(imageURL));
             this.UserLogin_TB.Text = login;
             this.MessegeCout_TB.Text = msgCount;
+           
         }
 
         private void StartChatWithUser_btn_Click(object sender, RoutedEventArgs e)
         {
-            Window_Messeg m =  new Window_Messeg(this.UserLogin_TB.Text);
+            WindowMesseg d = new WindowMesseg(this.UserLogin_TB.Text);
+            d.Show();
             
         }
     }

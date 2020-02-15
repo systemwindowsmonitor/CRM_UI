@@ -1,24 +1,32 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.Data.SQLite;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 
 namespace CRM_UI.Storage.Chat
 {
     /// <summary>
-    /// Логика взаимодействия для Window_Messeg.xaml
+    /// Логика взаимодействия для WindowMesseg.xaml
     /// </summary>
-    public partial class Window_Messeg : UserControl
+    public partial class WindowMesseg : Window
     {
         public static string UserName { get; set; }
-        public Window_Messeg()
+        public WindowMesseg()
         {
             InitializeComponent();
-
         }
-        public Window_Messeg(string userLogin)
+        public WindowMesseg(string userLogin)
         {
             InitializeComponent();
             UserName = userLogin;
@@ -51,13 +59,23 @@ namespace CRM_UI.Storage.Chat
             }
         }
 
+        private void CloseChat_btn_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void HideChat_btn_Click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
+
         private void Return_btn_Click(object sender, RoutedEventArgs e)
         {
             GC.Collect();
         }
 
         private void MessegingWindow_Loaded(object sender, RoutedEventArgs e)
-       
+
         {
             using (SQLiteConnection conn = new SQLiteConnection(string.Format($"Data Source={String_Resources.pathToDatabase}")))
             {
@@ -78,10 +96,15 @@ namespace CRM_UI.Storage.Chat
             }
 
         }
-            
 
-        
+        private void MessegingPanel_LayoutUpdated(object sender, EventArgs e)
+        {
 
-        private void MessegingPanel_LayoutUpdated(object sender, EventArgs e) { }
+        }
+
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            DragMove();
+        }
     }
 }

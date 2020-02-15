@@ -10,7 +10,7 @@
 
         <StackPanel x:Name="UserOrders_SP">
             <Button x:Name="StartChatWithUser_btn" Margin="10" Background="{x:Null}" BorderBrush="#FF00CC99" 
-                    Height="50" Command="{x:Static materialDesign:Transitioner.MoveNextCommand}" CommandParameter="{Binding ElementName=UserLogin_TB, Path=Text}" >
+                    Height="50" Click="StartChatWithUser_btn_Click">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto"/>

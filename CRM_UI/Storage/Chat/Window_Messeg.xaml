@@ -47,7 +47,7 @@
         </StackPanel>
 
         <ScrollViewer VerticalScrollBarVisibility="Visible" Grid.Row="1" >
-            <StackPanel x:Name="MessegingPanel" VerticalAlignment="Top" >
+            <StackPanel x:Name="MessegingPanel" LayoutUpdated="MessegingPanel_LayoutUpdated" VerticalAlignment="Top" >
                 <!--<local:UserControlMessageReceived HorizontalAlignment="Left"/>
                 <local:UserControlMessageSent HorizontalAlignment="Right"/>-->
             </StackPanel>
